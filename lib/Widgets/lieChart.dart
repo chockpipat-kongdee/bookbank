@@ -1,9 +1,8 @@
-// TODO Implement this library.
+// ────────── Package & Theme Imports ──────────
 import 'package:fl_chart/fl_chart.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
 
-// ----- Line Chart Helper Functions -----
-
+// ────────── Create Segments with Area ──────────
 List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
   List<LineChartBarData> segments = [];
 
@@ -11,9 +10,11 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
     final start = spots[i];
     final end = spots[i + 1];
 
+    // ────────── Check if both points are on the same side of x-axis ──────────
     if ((start.y >= 0 && end.y >= 0) || (start.y < 0 && end.y < 0)) {
       final color = start.y >= 0 ? AppColors.green : AppColors.red;
 
+      // Add segment to list
       segments.add(
         LineChartBarData(
           spots: [start, end],
@@ -31,12 +32,15 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
       continue;
     }
 
+    // ────────── Calculate intersection with x-axis ──────────
     final ratio = start.y / (start.y - end.y);
     final x0 = start.x + (end.x - start.x) * ratio;
     final zeroPoint = FlSpot(x0, 0);
 
+    // ────────── Create first segment ──────────
     final color1 = start.y >= 0 ? AppColors.green : AppColors.red;
 
+    // ────────── Add first segment to list ──────────
     segments.add(
       LineChartBarData(
         spots: [start, zeroPoint],
@@ -51,8 +55,10 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
       ),
     );
 
+    // ────────── Create second segment ──────────
     final color2 = end.y >= 0 ? AppColors.green : AppColors.red;
 
+    // ────────── Add second segment to list ──────────
     segments.add(
       LineChartBarData(
         spots: [zeroPoint, end],

@@ -1,11 +1,15 @@
-import 'package:bookbank/features/charts/chart_screen.dart';
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// ────────── Widgets ──────────
 import 'package:bookbank/features/home/home_screen.dart';
 import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
+import 'package:bookbank/features/charts/chart_screen.dart';
 import 'package:bookbank/features/records/record_screen.dart';
 import 'package:bookbank/features/notebook/noteBook_screen.dart';
 
+// ────────── Stateful Widget ──────────
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -13,10 +17,9 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// ────────── State Management ──────────
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0; // Current selected index
-
-  // Key สำหรับ Home / Record widget เพื่อ force rebuild หลังบันทึก
+  int currentIndex = 0;
   Key _homeKey = UniqueKey();
   Key _recordKey = UniqueKey();
 
@@ -29,16 +32,18 @@ class _HomePageState extends State<HomePage> {
     NoteBookScreen(),
   ];
 
-  // Build navigation item
+  // ────────── Build navigation item ──────────
   Widget _buildNavItem(int index, IconData icon) {
     bool isSelected = currentIndex == index;
     final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () {
         setState(() {
           currentIndex = index;
         });
       },
+
       behavior: HitTestBehavior.opaque,
       child: SizedBox(
         width: 50.w,
@@ -47,6 +52,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Icons
             Icon(
               icon,
               color: isSelected
@@ -54,6 +60,8 @@ class _HomePageState extends State<HomePage> {
                   : theme.colorScheme.onSurfaceVariant,
               size: 23.sp,
             ),
+
+            // Active indicator
             if (isSelected) ...[
               SizedBox(height: 6.h),
               Container(
@@ -71,10 +79,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Build the navigation bar
+  // ────────── Build the navigation bar ──────────
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
       extendBody: true,
       body: pages[currentIndex],
@@ -102,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       _buildNavItem(0, Icons.home_rounded),
                       _buildNavItem(1, Icons.list_alt_rounded),
-                      SizedBox(width: 80.w), // Space for center button
+                      SizedBox(width: 80.w),
                       _buildNavItem(3, Icons.area_chart_rounded),
                       _buildNavItem(4, Icons.edit_square),
                     ],
@@ -110,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              // Center button
+              // ────────── Center button ──────────
               Positioned(
                 top: 0,
                 child: GestureDetector(
@@ -125,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     );
                   },
+
                   child: Container(
                     height: 70.h,
                     width: 70.w,
@@ -136,6 +146,7 @@ class _HomePageState extends State<HomePage> {
                         width: 10,
                       ),
                     ),
+
                     child: Icon(
                       Icons.add,
                       color: theme.colorScheme.surfaceBright,

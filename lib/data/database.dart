@@ -17,7 +17,7 @@ class MyData {
   String? date;
   String? title;
 
-  /// แปลงข้อมูลในคลาสเป็นแผนที่สำหรับเขียนลง SQLite
+  /// Convert class data to map for SQLite storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -30,7 +30,7 @@ class MyData {
     };
   }
 
-  /// สร้างวัตถุจากผลลัพธ์ที่อ่านจาก SQLite
+  /// Create object from SQLite query result
   factory MyData.fromMap(Map<String, dynamic> map) {
     return MyData(
       id: map['id'] as int?,
@@ -63,7 +63,7 @@ class GroupSettings {
   bool savingsGoalEnabled;
   double savingsGoalAmount;
 
-  /// แปลงข้อมูลในคลาสเป็นแผนที่สำหรับเขียนลง SQLite
+  /// Convert class data to map for SQLite storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -76,7 +76,7 @@ class GroupSettings {
     };
   }
 
-  /// สร้างวัตถุจากผลลัพธ์ที่อ่านจาก SQLite
+  /// Create object from SQLite query result
   factory GroupSettings.fromMap(Map<String, dynamic> map) {
     return GroupSettings(
       id: map['id'] as int?,

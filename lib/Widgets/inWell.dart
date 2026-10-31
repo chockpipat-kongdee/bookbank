@@ -1,6 +1,8 @@
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ────────── Date Selector InkWell Widget ──────────
 class DateSelectorInkWell extends StatelessWidget {
   final DateTime? selectedDate;
   final String Function(DateTime) formatDate;
@@ -35,6 +37,7 @@ class DateSelectorInkWell extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // ────────── Text label ──────────
             Flexible(
               child: Text(
                 selectedDate != null ? formatDate(selectedDate!) : 'Select',
@@ -47,6 +50,8 @@ class DateSelectorInkWell extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+
+            // ────────── Calendar icon ──────────
             Icon(
               Icons.calendar_today,
               size: isTablet ? 22.sp : 18.sp,

@@ -1,13 +1,18 @@
+// ────────── Packages & Providers ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
+import 'package:bookbank/features/onboarding/providers/onboarding_provider.dart';
+
+// ────────── Theme & Localization ──────────
 import 'package:bookbank/core/theme/app_theme.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
+
+// ────────── Widgets ──────────
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 import 'package:bookbank/features/notebook/providers/note_provider.dart';
-import 'package:bookbank/core/localization/localization_provider.dart';
-import 'package:bookbank/features/onboarding/providers/onboarding_provider.dart';
 import 'package:bookbank/features/onboarding/onboarding_page_1.dart';
 
 void main() {
@@ -27,6 +32,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MultiProvider(
+          // ────────── Add more providers here ──────────
           providers: [
             ChangeNotifierProvider(create: (_) => GroupSettingsProvider()),
             ChangeNotifierProvider(create: (_) => ThemeProvider()),
@@ -34,6 +40,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (_) => LocalizationProvider()),
             ChangeNotifierProvider(create: (_) => OnboardingProvider()),
           ],
+
+          // ────────── Theme Provider ──────────
           child: Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
               return MaterialApp(
@@ -44,6 +52,8 @@ class MyApp extends StatelessWidget {
                     ? ThemeMode.dark
                     : ThemeMode.light,
                 home: const OnboardingWrapper(),
+
+                // ────────── Add responsive breakpoints ──────────
                 builder: (context, widget) {
                   return ResponsiveBreakpoints.builder(
                     breakpoints: const [

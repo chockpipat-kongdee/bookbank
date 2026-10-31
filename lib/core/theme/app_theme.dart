@@ -10,7 +10,7 @@ class AppSize {
   static const double xl = 18;
   static const double xxl = 22;
 
-  // Aliases สำหรับ backward-compatibility กับ code เดิม
+  // Aliases for backward compatibility
   static const double s = sm;
   static const double m = sm;
   static const double l = base;
@@ -66,7 +66,7 @@ class LightColors {
   ];
 }
 
-// ─── Shared / Static Colors (ไม่เปลี่ยนตามธีม) ────────────────────────────────
+// ─── Shared / Static Colors (theme-independent) ────────────────────────────────
 
 class AppColors {
   // Functional

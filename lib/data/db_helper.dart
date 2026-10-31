@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:bookbank/data/database.dart';
 
-/// ตัวช่วยเชื่อมต่อ SQLite และจัดการคำสั่ง CRUD
+/// SQLite database helper for CRUD operations
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
 
@@ -13,14 +13,14 @@ class DatabaseHelper {
 
   static Database? _database;
 
-  /// เปิดฐานข้อมูล และเก็บ instance ไว้ใช้งานครั้งต่อไป
+  /// Open database and cache instance for reuse
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDatabase();
     return _database!;
   }
 
-  /// สร้างไฟล์ฐานข้อมูล และเตรียมตารางเริ่มต้น
+  /// Create database file and initialize tables
   Future<Database> _initDatabase() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, 'Mydatabase.db');
@@ -33,7 +33,7 @@ class DatabaseHelper {
     );
   }
 
-  /// สร้างตารางในฐานข้อมูล
+  /// Create tables in database
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE transactions(
@@ -72,7 +72,7 @@ class DatabaseHelper {
     await _insertDefaultGroupSettings(db);
   }
 
-  /// อัปเกรดฐานข้อมูลเมื่อเปลี่ยนเวอร์ชัน
+  /// Upgrade database when version changes
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
       await db.execute('ALTER TABLE transactions ADD COLUMN date TEXT');
@@ -109,7 +109,7 @@ class DatabaseHelper {
     }
   }
 
-  /// แทรกข้อมูลเริ่มต้นสำหรับ group settings
+  /// Insert default group settings
   Future<void> _insertDefaultGroupSettings(Database db) async {
     final defaultGroups = [
       {
@@ -150,7 +150,7 @@ class DatabaseHelper {
     }
   }
 
-  /// เพิ่มข้อมูลใหม่ลงในตาราง transactions
+  /// Insert new transaction record
   Future<int> insertData(MyData item) async {
     final db = await database;
     return await db.insert(
@@ -160,7 +160,7 @@ class DatabaseHelper {
     );
   }
 
-  /// อ่านข้อมูลทั้งหมดจากตาราง transactions
+  /// Read all transactions
   Future<List<MyData>> getAllData() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -170,7 +170,7 @@ class DatabaseHelper {
     return maps.map((map) => MyData.fromMap(map)).toList();
   }
 
-  /// อัปเดตข้อมูลในตาราง transactions โดยใช้ id
+  /// Update transaction by id
   Future<int> updateData(MyData item) async {
     final db = await database;
     if (item.id == null) return 0;
@@ -182,20 +182,20 @@ class DatabaseHelper {
     );
   }
 
-  /// ลบข้อมูลตาม id จากตาราง transactions
+  /// Delete transaction by id
   Future<int> deleteData(int id) async {
     final db = await database;
     return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
   }
 
-  /// อ่านข้อมูล group settings ทั้งหมด
+  /// Read all group settings
   Future<List<GroupSettings>> getAllGroupSettings() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('group_settings');
     return maps.map((map) => GroupSettings.fromMap(map)).toList();
   }
 
-  /// อ่านข้อมูล group settings ตาม groupId
+  /// Read group settings by groupId
   Future<GroupSettings?> getGroupSettings(String groupId) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -207,7 +207,7 @@ class DatabaseHelper {
     return GroupSettings.fromMap(maps.first);
   }
 
-  /// อัปเดตหรือแทรกข้อมูล group settings
+  /// Update or insert group settings
   Future<int> upsertGroupSettings(GroupSettings settings) async {
     final db = await database;
     return await db.insert(
@@ -217,7 +217,7 @@ class DatabaseHelper {
     );
   }
 
-  /// อัปเดตข้อมูล group settings ตาม id
+  /// Update group settings by id
   Future<int> updateGroupSettings(GroupSettings settings) async {
     final db = await database;
     if (settings.id == null) return 0;
@@ -231,7 +231,7 @@ class DatabaseHelper {
 
   // ─── Note Operations ──────────────────────────────────────────────────────────
 
-  /// แทรกบันทึกใหม่
+  /// Insert new note
   Future<int> insertNote(NoteModel note) async {
     final db = await database;
     return await db.insert(
@@ -241,7 +241,7 @@ class DatabaseHelper {
     );
   }
 
-  /// ดึงบันทึกทั้งหมด เรียงลำดับจากปักหมุดก่อนและไอดีล่าสุด
+  /// Read all notes sorted by pinned status and latest id
   Future<List<NoteModel>> getAllNotes() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -251,7 +251,7 @@ class DatabaseHelper {
     return maps.map((map) => NoteModel.fromMap(map)).toList();
   }
 
-  /// อัปเดตบันทึก
+  /// Update note
   Future<int> updateNote(NoteModel note) async {
     final db = await database;
     if (note.id == null) return 0;
@@ -263,7 +263,7 @@ class DatabaseHelper {
     );
   }
 
-  /// ลบบันทึกตาม id
+  /// Delete note by id
   Future<int> deleteNote(int id) async {
     final db = await database;
     return await db.delete('notes', where: 'id = ?', whereArgs: [id]);
