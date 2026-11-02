@@ -1,3 +1,5 @@
+
+// ────────── MyData ──────────
 class MyData {
   MyData({
     this.id,
@@ -17,7 +19,6 @@ class MyData {
   String? date;
   String? title;
 
-  /// Convert class data to map for SQLite storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -30,7 +31,6 @@ class MyData {
     };
   }
 
-  /// Create object from SQLite query result
   factory MyData.fromMap(Map<String, dynamic> map) {
     return MyData(
       id: map['id'] as int?,
@@ -44,6 +44,7 @@ class MyData {
   }
 }
 
+// ────────── GroupSettings ──────────
 class GroupSettings {
   GroupSettings({
     this.id,
@@ -63,7 +64,6 @@ class GroupSettings {
   bool savingsGoalEnabled;
   double savingsGoalAmount;
 
-  /// Convert class data to map for SQLite storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -76,7 +76,6 @@ class GroupSettings {
     };
   }
 
-  /// Create object from SQLite query result
   factory GroupSettings.fromMap(Map<String, dynamic> map) {
     return GroupSettings(
       id: map['id'] as int?,
@@ -90,6 +89,7 @@ class GroupSettings {
   }
 }
 
+// ────────── NoteModel ──────────
 class NoteModel {
   NoteModel({
     this.id,

@@ -1,6 +1,3 @@
-// ─── App Localizations ────────────────────────────────────────────────────────
-// Centralized translation strings for Thai, English, and Chinese
-
 class AppLocalizations {
   final String languageCode;
 

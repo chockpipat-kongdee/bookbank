@@ -7,7 +7,7 @@ class FinancialCalculations {
 
   FinancialCalculations(this.transactions);
 
-  // รายรับเงินในบัญชี + transfer ที่เข้า bank (moneyGroup='bank')
+  // ────────── Bank Income ──────────
   double filterBankIncome() {
     double sum = 0;
     for (var element in transactions) {
@@ -22,7 +22,7 @@ class FinancialCalculations {
     return sum;
   }
 
-  // รายจ่ายเงินในบัญชี + transfer ที่ออกจาก bank (moneyList='bank')
+  // ────────── Bank Expense ──────────
   double filterBankExpense() {
     double sum = 0;
     for (var element in transactions) {
@@ -37,7 +37,7 @@ class FinancialCalculations {
     return sum;
   }
 
-  // รายรับเงินสด + transfer ที่เข้า cash (moneyGroup='cash')
+  // ────────── Cash Income ──────────
   double filterCashIncome() {
     double sum = 0;
     for (var element in transactions) {
@@ -52,7 +52,7 @@ class FinancialCalculations {
     return sum;
   }
 
-  // รายจ่ายเงินสด + transfer ที่ออกจาก cash (moneyList='cash')
+  // ────────── Cash Expense ──────────
   double filterCashExpense() {
     double sum = 0;
     for (var element in transactions) {
@@ -67,7 +67,7 @@ class FinancialCalculations {
     return sum;
   }
 
-  // รายรับตามกลุ่ม
+  // ────────── Group Income ──────────
   double groupIncome(String group) {
     return transactions
         .where((e) => e.moneyGroup == group && e.moneyType == 'income')
@@ -78,7 +78,7 @@ class FinancialCalculations {
         );
   }
 
-  // รายจ่ายตามกลุ่ม
+  // ────────── Group Expense ──────────
   double groupExpense(String group) {
     return transactions
         .where((e) => e.moneyGroup == group && e.moneyType == 'expense')
@@ -89,31 +89,31 @@ class FinancialCalculations {
         );
   }
 
-  // รวมรายรับตามกลุ่มทั้งหมด
+  // ────────── Income Group Total ──────────
   double incomeGroupTotal() {
     return transactions
         .where((e) => e.moneyType == 'income' && e.moneyGroup.isNotEmpty)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รวมรายจ่ายตามกลุ่มทั้งหมด
+  // ────────── Expense Group Total ──────────
   double expenseGroupTotal() {
     return transactions
         .where((e) => e.moneyType == 'expense' && e.moneyGroup.isNotEmpty)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รวมเงินในบัญชี
+  // ────────── Bank Total ──────────
   double sumBank() {
     return filterBankIncome() - filterBankExpense();
   }
 
-  // รวมเงินสด
+  // ────────── Cash Total ──────────
   double sumCash() {
     return filterCashIncome() - filterCashExpense();
   }
 
-  // รวมรายรับทั้งหมด (ไม่รวม transfer)
+  // ────────── Income Total ──────────
   double income() {
     double sum = 0;
     for (var element in transactions) {
@@ -124,26 +124,26 @@ class FinancialCalculations {
     return sum;
   }
 
-  // รวมรายจ่ายทั้งหมด
+  // ────────── Expense Total ──────────
   double expense() {
     return filterBankExpense() + filterCashExpense();
   }
 
-  // รวมเงินคงเหลือทั้งหมด
+  // ────────── Total Balance ──────────
   double sumAll() {
     return sumBank() + sumCash();
   }
 
-  // รวมเงินคงเหลือตามกลุ่ม (รวม group-transfer ด้วย)
+  // ────────── Group Balance ──────────
   double sumGroup(String group) {
     double base = groupIncome(group) - groupExpense(group);
 
-    // transfer ออกจาก group นี้ (moneyList = groupId)
+    // transfer out
     double transferOut = transactions
         .where((e) => e.moneyType == 'transfer' && e.moneyList == group)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
 
-    // transfer เข้า group นี้ (moneyGroup = groupId)
+    // transfer in
     double transferIn = transactions
         .where((e) => e.moneyType == 'transfer' && e.moneyGroup == group)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
@@ -151,17 +151,17 @@ class FinancialCalculations {
     return base - transferOut + transferIn;
   }
 
-  // รวมเงินคงเหลือตามกลุ่มทั้งหมด
+  // ────────── Group Total ──────────
   double sumGroupAll() {
     return incomeGroupTotal() - expenseGroupTotal();
   }
 
-  // ส่วนต่าง
+  // ────────── Gap ──────────
   double gap() {
     return sumAll() - sumGroupAll();
   }
 
-  // คำนวณเปอร์เซ็นต์ของหมวดหมู่เทียบกับผลรวมหมวดหมู่ทั้งหมด
+  // ────────── Group Percentage ──────────
   double calculateGroupPercentage(String group) {
     double groupTotal = sumGroupAll().toDouble();
     if (groupTotal <= 0) return 0.0;
@@ -169,7 +169,7 @@ class FinancialCalculations {
     return (groupAmount / groupTotal) * 100.0;
   }
 
-  // คำนวณเปอร์เซ็นต์ของ Unallocated เทียบกับผลรวมหมวดหมู่ทั้งหมด
+  // ────────── Unallocated Percentage ──────────
   double calculateUnallocatedPercentage() {
     double groupTotal = sumGroupAll().toDouble();
     if (groupTotal <= 0) return 0.0;
@@ -177,47 +177,47 @@ class FinancialCalculations {
     return (unallocated / groupTotal) * 100.0;
   }
 
-  // นับจำนวนรายการตามกลุ่ม
+  // ────────── Group Count ──────────
   int groupCount(String group) {
     return transactions.where((e) => e.moneyGroup == group).length;
   }
 
-  // นับจำนวนรายการที่ไม่ได้จัดกลุ่ม (รายรับ)
+  // ────────── Unallocated Count ──────────
   int unallocatedCount() {
     return transactions
         .where((e) => e.moneyGroup.isEmpty && e.moneyType == 'income')
         .length;
   }
 
-  // รวมยอดเงินที่ไม่ได้จัดกลุ่ม (รายรับ)
+  // ────────── Unallocated Amount ──────────
   double unallocatedAmount() {
     return transactions
         .where((e) => e.moneyGroup.isEmpty && e.moneyType == 'income')
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // สร้างข้อมูล FlSpot สำหรับกราฟ 30 วัน
+  // ────────── Monthly Spots ──────────
   List<FlSpot> generateMonthlySpots() {
     List<FlSpot> spots = [];
     DateTime now = DateTime.now();
     DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
-    // สร้างข้อมูล 30 วันย้อนหลัง
+    // Calculate data for last 30 days
     for (int i = 29; i >= 0; i--) {
       DateTime date = now.subtract(Duration(days: i));
       String dateStr = dateFormat.format(date);
 
-      // คำนวณรายรับของวันนั้น
+      // Calculate income for the day
       double dailyIncome = transactions
           .where((e) => e.moneyType == 'income' && e.date == dateStr)
           .fold(0.0, (sum, e) => sum + e.amount.toDouble());
 
-      // คำนวณรายจ่ายของวันนั้น
+      // Calculate expense for the day
       double dailyExpense = transactions
           .where((e) => e.moneyType == 'expense' && e.date == dateStr)
           .fold(0.0, (sum, e) => sum + e.amount.toDouble());
 
-      // คำนวณยอดสุทธิ (รายรับ - รายจ่าย)
+      // Calculate net amount (income - expense)
       double netAmount = dailyIncome - dailyExpense;
 
       // x = วันที่ (1-30), y = ยอดสุทธิ
@@ -227,43 +227,43 @@ class FinancialCalculations {
     return spots;
   }
 
-  // สร้างข้อมูล FlSpot สำหรับกราฟ 30 วันตามหมวดหมู่
+  // ────────── Monthly Spots for Group ──────────
   List<FlSpot> generateMonthlySpotsForGroup(String group) {
     List<FlSpot> spots = [];
     DateTime now = DateTime.now();
     DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
-    // กรองเฉพาะ transaction ของ group นี้
+    // Filter transactions for this group
     final groupTransactions = transactions
         .where((e) => e.moneyGroup == group)
         .toList();
 
-    // สร้างข้อมูล 30 วันย้อนหลัง
+    // Create data for last 30 days
     for (int i = 29; i >= 0; i--) {
       DateTime date = now.subtract(Duration(days: i));
       String dateStr = dateFormat.format(date);
 
-      // คำนวณรายรับของวันนั้นในหมวดหมู่
+      // Calculate income for the day in this group
       double dailyIncome = groupTransactions
           .where((e) => e.moneyType == 'income' && e.date == dateStr)
           .fold(0.0, (sum, e) => sum + e.amount.toDouble());
 
-      // คำนวณรายจ่ายของวันนั้นในหมวดหมู่
+      // Calculate expense for the day in this group
       double dailyExpense = groupTransactions
           .where((e) => e.moneyType == 'expense' && e.date == dateStr)
           .fold(0.0, (sum, e) => sum + e.amount.toDouble());
 
-      // คำนวณยอดสุทธิ (รายรับ - รายจ่าย)
+      // Calculate net amount (income - expense)
       double netAmount = dailyIncome - dailyExpense;
 
-      // x = วันที่ (1-30), y = ยอดสุทธิ
+      // x = day (1-30), y = net amount
       spots.add(FlSpot((30 - i).toDouble(), netAmount));
     }
 
     return spots;
   }
 
-  // รายรับเฉพาะเดือนปัจจุบัน
+  // ────────── Monthly Income ──────────
   double monthlyIncome() {
     DateTime now = DateTime.now();
     int currentMonth = now.month;
@@ -280,7 +280,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายจ่ายเฉพาะเดือนปัจจุบัน
+  // ────────── Monthly Expense ──────────
   double monthlyExpense() {
     DateTime now = DateTime.now();
     int currentMonth = now.month;
@@ -297,7 +297,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายรับเฉพาะเดือนปัจจุบันตามหมวดหมู่
+  // ────────── Monthly Group Income ──────────
   double monthlyGroupIncome(String group) {
     DateTime now = DateTime.now();
     int currentMonth = now.month;
@@ -315,7 +315,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายจ่ายเฉพาะเดือนปัจจุบันตามหมวดหมู่
+  // ────────── Monthly Group Expense ──────────
   double monthlyGroupExpense(String group) {
     DateTime now = DateTime.now();
     int currentMonth = now.month;
@@ -333,7 +333,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // ตรวจสอบว่าวันที่อยู่ในเดือนปัจจุบันหรือไม่
+  // ────────── Helper Methods ──────────
   bool _isCurrentMonth(String dateStr, int currentMonth, int currentYear) {
     try {
       List<String> parts = dateStr.split('-');
@@ -348,26 +348,26 @@ class FinancialCalculations {
 
   // ========== Daily Calculations ==========
 
-  // รายรับในวันที่ระบุ
+  // ────────── Daily Income ──────────
   double dailyIncome(String dateStr) {
     return transactions
         .where((e) => e.moneyType == 'income' && e.date == dateStr)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายจ่ายในวันที่ระบุ
+  // ────────── Daily Expense ──────────
   double dailyExpense(String dateStr) {
     return transactions
         .where((e) => e.moneyType == 'expense' && e.date == dateStr)
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // ยอดสุทธิในวันที่ระบุ
+  // ────────── Daily Net ──────────
   double dailyNet(String dateStr) {
     return dailyIncome(dateStr) - dailyExpense(dateStr);
   }
 
-  // รายจ่ายตามหมวดหมู่ในวันที่ระบุ
+  // ────────── Daily Expense by Category ──────────
   double dailyExpenseByCategory(String dateStr, String group) {
     return transactions
         .where(
@@ -379,7 +379,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // คำนวณเปอร์เซ็นต์ของหมวดหมู่เทียบกับรายจ่ายทั้งหมดในวันนั้น
+  // ────────── Daily Category Percentage ──────────
   double dailyCategoryPercentage(String dateStr, String group) {
     double totalExpense = dailyExpense(dateStr);
     if (totalExpense <= 0) return 0.0;
@@ -388,7 +388,7 @@ class FinancialCalculations {
 
   // ========== Monthly Calculations ==========
 
-  // รายรับในเดือนที่ระบุ
+  // ────────── Monthly Income for Date ──────────
   double monthlyIncomeForDate(int year, int month) {
     return transactions
         .where(
@@ -401,7 +401,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายจ่ายในเดือนที่ระบุ
+  // ────────── Monthly Expense for Date ──────────
   double monthlyExpenseForDate(int year, int month) {
     return transactions
         .where(
@@ -414,13 +414,13 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // ยอดสุทธิในเดือนที่ระบุ
+  // ────────── Monthly Net for Date ──────────
   double monthlyNetForDate(int year, int month) {
     return monthlyIncomeForDate(year, month) -
         monthlyExpenseForDate(year, month);
   }
 
-  // รายจ่ายตามหมวดหมู่ในเดือนที่ระบุ
+  // ────────── Monthly Expense by Category ──────────
   double monthlyExpenseByCategory(int year, int month, String group) {
     return transactions
         .where(
@@ -434,7 +434,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // คำนวณเปอร์เซ็นต์ของหมวดหมู่เทียบกับรายจ่ายทั้งหมดในเดือนนั้น
+  // ────────── Monthly Category Percentage ──────────
   double monthlyCategoryPercentage(int year, int month, String group) {
     double totalExpense = monthlyExpenseForDate(year, month);
     if (totalExpense <= 0) return 0.0;
@@ -442,7 +442,7 @@ class FinancialCalculations {
         100.0;
   }
 
-  // สร้างข้อมูล FlSpot สำหรับกราฟรายวันในเดือนที่ระบุ
+  // ────────── Generate Daily Spots for Month ──────────
   List<FlSpot> generateDailySpotsForMonth(int year, int month) {
     List<FlSpot> spots = [];
     int daysInMonth = DateTime(year, month + 1, 0).day;
@@ -459,7 +459,7 @@ class FinancialCalculations {
 
   // ========== Yearly Calculations ==========
 
-  // รายรับในปีที่ระบุ
+  // ────────── Yearly Income ──────────
   double yearlyIncome(int year) {
     return transactions
         .where(
@@ -472,7 +472,7 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // รายจ่ายในปีที่ระบุ
+  // ────────── Yearly Expense ──────────
   double yearlyExpense(int year) {
     return transactions
         .where(
@@ -485,12 +485,12 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // ยอดสุทธิในปีที่ระบุ
+  // ────────── Yearly Net ──────────
   double yearlyNet(int year) {
     return yearlyIncome(year) - yearlyExpense(year);
   }
 
-  // รายจ่ายตามหมวดหมู่ในปีที่ระบุ
+  // ────────── Yearly Expense by Category ──────────
   double yearlyExpenseByCategory(int year, String group) {
     return transactions
         .where(
@@ -504,14 +504,14 @@ class FinancialCalculations {
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
   }
 
-  // คำนวณเปอร์เซ็นต์ของหมวดหมู่เทียบกับรายจ่ายทั้งหมดในปีนั้น
+  // ────────── Yearly Category Percentage ──────────
   double yearlyCategoryPercentage(int year, String group) {
     double totalExpense = yearlyExpense(year);
     if (totalExpense <= 0) return 0.0;
     return (yearlyExpenseByCategory(year, group) / totalExpense) * 100.0;
   }
 
-  // สร้างข้อมูล FlSpot สำหรับกราฟรายเดือนในปีที่ระบุ
+  // ────────── Generate Monthly Spots for Year ──────────
   List<FlSpot> generateMonthlySpotsForYear(int year) {
     List<FlSpot> spots = [];
 
@@ -525,7 +525,7 @@ class FinancialCalculations {
 
   // ========== Helper Functions ==========
 
-  // ตรวจสอบว่าวันที่อยู่ในเดือนและปีที่ระบุหรือไม่
+  // ────────── Is Month Year ──────────
   bool _isMonthYear(String dateStr, int year, int month) {
     try {
       List<String> parts = dateStr.split('-');
@@ -538,7 +538,7 @@ class FinancialCalculations {
     }
   }
 
-  // ตรวจสอบว่าวันที่อยู่ในปีที่ระบุหรือไม่
+  // ────────── Is Year ──────────
   bool _isYear(String dateStr, int year) {
     try {
       List<String> parts = dateStr.split('-');
@@ -551,13 +551,13 @@ class FinancialCalculations {
   }
 }
 
-// คำนวณเปอร์เซ็นต์ของจำนวนเงินที่มีเทียบกับยอดรวม
+// ────────── Calculate Percentage ──────────
 double calculatePercentage(double amount, double total) {
   if (total <= 0) return 0.0;
   return (amount / total) * 100.0;
 }
 
-// คำนวณความยาวของแถบจากเปอร์เซ็นต์
+// ────────── Calculate Bar Width ──────────
 double calculateBarWidth(double amount, double total, double maxWidth) {
   if (total <= 0) return 0.0;
   return (amount * maxWidth) / total;

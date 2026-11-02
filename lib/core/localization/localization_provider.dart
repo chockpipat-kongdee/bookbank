@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bookbank/core/localization/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-// ─── Supported Languages ──────────────────────────────────────────────────────
+// ────────── Supported Languages ──────────
 
 enum AppLanguage {
   thai('th', 'ไทย', '🇹🇭'),
@@ -17,7 +17,7 @@ enum AppLanguage {
   const AppLanguage(this.code, this.label, this.flag);
 }
 
-// ─── Supported Currencies ────────────────────────────────────────────────────
+// ────────── Supported Currencies ──────────
 
 enum AppCurrency {
   baht('THB', '฿ ', 'บาท', 1.0),
@@ -32,7 +32,7 @@ enum AppCurrency {
   const AppCurrency(this.code, this.symbol, this.label, this.rateFromBaht);
 }
 
-// ─── Localization Provider ────────────────────────────────────────────────────
+// ────────── Localization Provider ──────────
 
 class LocalizationProvider extends ChangeNotifier {
   static const String _langKey = 'app_language';
@@ -54,9 +54,11 @@ class LocalizationProvider extends ChangeNotifier {
     _loadPreferences();
   }
 
+  // ────────── Load Preferences ──────────
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
 
+    // Load language preference
     final langCode = prefs.getString(_langKey);
     if (langCode != null) {
       _language = AppLanguage.values.firstWhere(
@@ -65,6 +67,7 @@ class LocalizationProvider extends ChangeNotifier {
       );
     }
 
+    // Load currency preference
     final currencyCode = prefs.getString(_currencyKey);
     if (currencyCode != null) {
       _currency = AppCurrency.values.firstWhere(
@@ -76,6 +79,7 @@ class LocalizationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ────────── Set Language ──────────
   Future<void> setLanguage(AppLanguage language) async {
     if (_language == language) return;
     _language = language;
@@ -84,6 +88,7 @@ class LocalizationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ────────── Set Currency ──────────
   Future<void> setCurrency(AppCurrency currency) async {
     if (_currency == currency) return;
     _currency = currency;
@@ -92,12 +97,12 @@ class LocalizationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Convert an amount from THB to the current currency
+  // ────────── Convert Amount ──────────
   double convertAmount(double amountInBaht) {
     return amountInBaht * _currency.rateFromBaht;
   }
 
-  /// Format an amount with the current currency symbol
+  // ────────── Format Amount ──────────
   String formatAmount(double amountInBaht) {
     final converted = convertAmount(amountInBaht);
     final hasDecimals = converted != converted.truncate();

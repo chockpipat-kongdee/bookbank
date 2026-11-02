@@ -20,6 +20,8 @@ class DatabaseHelper {
     return _database!;
   }
 
+  // ────────── Database Initialization ──────────
+
   /// Create database file and initialize tables
   Future<Database> _initDatabase() async {
     final databasePath = await getDatabasesPath();
@@ -32,6 +34,8 @@ class DatabaseHelper {
       onUpgrade: _onUpgrade,
     );
   }
+
+  // ────────── Database Creation ──────────
 
   /// Create tables in database
   Future<void> _onCreate(Database db, int version) async {
@@ -72,6 +76,8 @@ class DatabaseHelper {
     await _insertDefaultGroupSettings(db);
   }
 
+  // ────────── Database Upgrade ──────────
+
   /// Upgrade database when version changes
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
@@ -108,6 +114,8 @@ class DatabaseHelper {
       ''');
     }
   }
+
+  // ────────── Default Group Settings ──────────
 
   /// Insert default group settings
   Future<void> _insertDefaultGroupSettings(Database db) async {
@@ -150,6 +158,8 @@ class DatabaseHelper {
     }
   }
 
+  // ────────── Transaction Operations ──────────
+
   /// Insert new transaction record
   Future<int> insertData(MyData item) async {
     final db = await database;
@@ -187,6 +197,8 @@ class DatabaseHelper {
     final db = await database;
     return await db.delete('transactions', where: 'id = ?', whereArgs: [id]);
   }
+
+  // ────────── Group Settings Operations ──────────
 
   /// Read all group settings
   Future<List<GroupSettings>> getAllGroupSettings() async {
@@ -229,7 +241,7 @@ class DatabaseHelper {
     );
   }
 
-  // ─── Note Operations ──────────────────────────────────────────────────────────
+  // ────────── Note Operations ──────────
 
   /// Insert new note
   Future<int> insertNote(NoteModel note) async {
