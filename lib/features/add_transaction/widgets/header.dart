@@ -1,9 +1,13 @@
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Providers ──────────
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Header Widget ──────────
 class Header extends StatelessWidget {
   const Header({super.key});
 
@@ -16,6 +20,7 @@ class Header extends StatelessWidget {
 
     return Column(
       children: [
+        // ────────── Drag handle indicator ──────────
         Center(
           child: Container(
             width: 40.w,
@@ -27,6 +32,7 @@ class Header extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16.h),
+        // ────────── Title row ──────────
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

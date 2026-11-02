@@ -1,7 +1,11 @@
-import 'package:bookbank/core/theme/app_theme.dart';
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ────────── Theme ──────────
+import 'package:bookbank/core/theme/app_theme.dart';
+
+// ────────── List Button Widget ──────────
 class ListButton extends StatelessWidget {
   final String buttonKey;
   final String titel;

@@ -1,10 +1,16 @@
-import 'package:bookbank/core/theme/app_theme.dart';
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
-import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Theme & Providers ──────────
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Feature Widgets ──────────
+import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
+
+// ────────── Category Selector Widget ──────────
 class CategorySelector extends StatelessWidget {
   final String? selectedGroup;
   final ValueChanged<String?> onChanged;
@@ -25,6 +31,7 @@ class CategorySelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ────────── Label ──────────
         Text(
           loc.category,
           style: theme.textTheme.bodySmall?.copyWith(
@@ -33,6 +40,7 @@ class CategorySelector extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
+        // ────────── Category selection grid ──────────
         Container(
           padding: EdgeInsets.symmetric(vertical: 3.w),
           decoration: BoxDecoration(
@@ -42,6 +50,7 @@ class CategorySelector extends StatelessWidget {
           ),
           child: Column(
             children: [
+              // First row: Group1 and Group2
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -64,6 +73,7 @@ class CategorySelector extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
+              // Second row: Group3 and Group4
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

@@ -1,9 +1,13 @@
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Providers ──────────
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Title Input Widget ──────────
 class TitleInput extends StatelessWidget {
   final TextEditingController controller;
 

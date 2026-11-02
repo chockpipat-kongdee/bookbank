@@ -1,10 +1,16 @@
-import 'package:bookbank/core/theme/app_theme.dart';
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
-import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Theme & Providers ──────────
+import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Feature Widgets ──────────
+import 'package:bookbank/features/add_transaction/widgets/list_button.dart';
+
+// ────────── Position Selector Widget ──────────
 class PositionSelector extends StatelessWidget {
   final String? selectedPosition;
   final ValueChanged<String> onChanged;
@@ -23,6 +29,7 @@ class PositionSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ────────── Label ──────────
         Text(
           loc.moneyPosition,
           style: theme.textTheme.bodySmall?.copyWith(
@@ -31,6 +38,7 @@ class PositionSelector extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
+        // ────────── Position selection buttons ──────────
         Container(
           height: 50,
           padding: EdgeInsets.symmetric(vertical: 3.w),

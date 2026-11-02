@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ─── Font Sizes ───────────────────────────────────────────────────────────────
+// ────────── Font Sizes ──────────
 
 class AppSize {
   static const double xs = 11;
@@ -16,7 +16,7 @@ class AppSize {
   static const double l = base;
 }
 
-// ─── Dark Theme Colors ────────────────────────────────────────────────────────
+// ────────── Dark Theme Colors ──────────
 
 class DarkColors {
   static const Color accent = Color(0xFFACF532);
@@ -41,7 +41,7 @@ class DarkColors {
   ];
 }
 
-// ─── Light Theme Colors ───────────────────────────────────────────────────────
+// ────────── Light Theme Colors ──────────
 
 class LightColors {
   static const Color accent = Color(0xFF8CDD00);
@@ -66,7 +66,7 @@ class LightColors {
   ];
 }
 
-// ─── Shared / Static Colors (theme-independent) ────────────────────────────────
+// ────────── Shared / Static Colors (theme-independent) ──────────
 
 class AppColors {
   // Functional
@@ -89,7 +89,7 @@ class AppColors {
   static Color get background => LightColors.background;
 }
 
-// ─── Theme Provider ───────────────────────────────────────────────────────────
+// ────────── Theme Provider ──────────
 
 class ThemeProvider extends ChangeNotifier {
   static const String _themeKey = 'isDarkMode';
@@ -115,7 +115,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 }
 
-// ─── Flutter ThemeData ────────────────────────────────────────────────────────
+// ────────── Flutter ThemeData ──────────
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -136,6 +136,7 @@ class AppTheme {
         onSurface: LightColors.text,
         onError: LightColors.white,
       ),
+
       textTheme: const TextTheme(
         labelSmall: TextStyle(fontSize: AppSize.xs, color: LightColors.text),
         bodySmall: TextStyle(fontSize: AppSize.sm, color: LightColors.text),
@@ -147,11 +148,13 @@ class AppTheme {
           color: LightColors.text,
         ),
       ),
+
       dividerTheme: const DividerThemeData(
         color: LightColors.border,
         thickness: 1,
         space: 1,
       ),
+
       cardTheme: CardThemeData(
         color: LightColors.cardBg,
         elevation: 0,
@@ -160,6 +163,7 @@ class AppTheme {
           side: const BorderSide(color: LightColors.border),
         ),
       ),
+
       iconTheme: const IconThemeData(color: LightColors.text, size: 24),
     );
   }
@@ -182,6 +186,7 @@ class AppTheme {
         onSurface: DarkColors.text,
         onError: DarkColors.white,
       ),
+
       textTheme: const TextTheme(
         labelSmall: TextStyle(fontSize: AppSize.xs, color: DarkColors.text),
         bodySmall: TextStyle(fontSize: AppSize.sm, color: DarkColors.text),
@@ -193,11 +198,13 @@ class AppTheme {
           color: DarkColors.text,
         ),
       ),
+
       dividerTheme: DividerThemeData(
         color: DarkColors.border,
         thickness: 1,
         space: 1,
       ),
+
       cardTheme: CardThemeData(
         color: DarkColors.cardBg,
         elevation: 0,
@@ -206,6 +213,7 @@ class AppTheme {
           side: const BorderSide(color: DarkColors.border),
         ),
       ),
+
       iconTheme: const IconThemeData(color: DarkColors.text, size: 24),
     );
   }

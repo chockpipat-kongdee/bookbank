@@ -1,11 +1,15 @@
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Data & Database ──────────
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 
+// ────────── Feature Widgets ──────────
 import 'package:bookbank/features/add_transaction/widgets/type_selector.dart';
 import 'package:bookbank/features/add_transaction/widgets/position_selector.dart';
 import 'package:bookbank/features/add_transaction/widgets/category_selector.dart';
@@ -14,11 +18,16 @@ import 'package:bookbank/features/add_transaction/widgets/amount_input.dart';
 import 'package:bookbank/features/add_transaction/widgets/transfer_mode.dart';
 import 'package:bookbank/features/add_transaction/widgets/title_input.dart';
 import 'package:bookbank/features/add_transaction/widgets/save_button.dart';
+
+// ────────── Shared Widgets ──────────
 import 'package:bookbank/Widgets/inWell.dart';
+
+// ────────── Theme & Providers ──────────
 import 'package:bookbank/core/theme/app_theme.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Add Transaction Screen ──────────
 class AddTransactionScreen extends StatefulWidget {
   final MyData? existingItem;
 
@@ -28,11 +37,14 @@ class AddTransactionScreen extends StatefulWidget {
   State<AddTransactionScreen> createState() => _AddTransactionScreenState();
 }
 
+// ────────── State Management ──────────
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
+  // Form controllers
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
 
+  // State variables
   num _number = 0;
   DateTime? selectedDate;
   String? selectedOption = 'Expense';
@@ -43,6 +55,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   String _transferFrom = 'Bank';
   String _transferTo = 'Cash';
 
+  // ────────── Initialize state with existing data if provided ──────────
   @override
   void initState() {
     super.initState();
@@ -61,6 +74,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
   }
 
+  // ────────── Date picker dialog ──────────
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -75,10 +89,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
   }
 
+  // ────────── Format date for display ──────────
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
   }
 
+  // ────────── Dispose controllers ──────────
   @override
   void dispose() {
     _amountController.dispose();
@@ -86,6 +102,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     super.dispose();
   }
 
+  // ────────── Build UI ──────────
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -98,6 +115,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         final locProvider = Provider.of<LocalizationProvider>(context);
         final loc = locProvider.loc;
 
+        // ────────── Map group IDs to display names ──────────
         final Map<String, String> categoryNames = {
           'Group1': groupSettings
               .firstWhere(
@@ -161,7 +179,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 const Header(),
                 SizedBox(height: 16.h),
 
-                // Form
+                // ────────── Form section ──────────
                 Form(
                   key: _formKey,
                   child: Column(
@@ -269,10 +287,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 ),
                 SizedBox(height: 30.h),
 
+                // ────────── Save button ──────────
                 SaveButton(
                   onPressed: () async {
                     if (!_formKey.currentState!.validate()) return;
 
+                    // Validate amount
                     if (_amountController.text.isEmpty) {
                       setState(() {
                         _amountError = loc.pleaseEnterAmount;
@@ -282,11 +302,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
                     _formKey.currentState!.save();
 
+                    // ────────── Handle transfer mode ──────────
                     if (_isTransferMode) {
                       final dateStr = DateFormat(
                         'yyyy-MM-dd',
                       ).format(selectedDate ?? DateTime.now());
-                      // บันทึกเพียง 1 รายการ โดย moneyList = from, moneyGroup = to
+                      // Save single transfer record: moneyList = from, moneyGroup = to
                       final transferItem = MyData(
                         amount: _number,
                         moneyType: 'transfer',
@@ -297,6 +318,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       );
                       await DatabaseHelper.instance.insertData(transferItem);
                     } else {
+                      // ────────── Handle normal income/expense ──────────
                       final newItem = MyData(
                         id: widget.existingItem?.id,
                         amount: _number,
@@ -312,6 +334,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             ? _titleController.text
                             : 'Anonymous',
                       );
+                      // Insert or update based on whether item exists
                       if (widget.existingItem == null) {
                         await DatabaseHelper.instance.insertData(newItem);
                       } else {
@@ -321,6 +344,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
                     if (!context.mounted) return;
 
+                    // ────────── Show success snackbar ──────────
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         behavior: SnackBarBehavior.floating,
@@ -346,12 +370,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           padding: EdgeInsets.only(left: 8.w),
                           child: Row(
                             children: [
+                              // Success icon
                               Icon(
                                 Icons.check_circle_outline,
                                 color: AppColors.background,
                                 size: isTablet ? 24.sp : 20.sp,
                               ),
                               SizedBox(width: 12.w),
+                              // Success message
                               Expanded(
                                 child: Text(
                                   widget.existingItem == null
@@ -370,6 +396,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       ),
                     );
 
+                    // ────────── Navigate back or reset form ──────────
                     if (Navigator.canPop(context)) {
                       Navigator.pop(context, true);
                     } else {
@@ -393,6 +420,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   }
 }
 
+// ────────── Bottom sheet for add transaction ──────────
 Future<void> showAddItemBottomSheet(
   BuildContext context, {
   MyData? existingItem,

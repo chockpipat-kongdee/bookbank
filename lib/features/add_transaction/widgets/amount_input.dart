@@ -1,9 +1,13 @@
+// ────────── Package Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Providers ──────────
 import 'package:bookbank/core/localization/localization_provider.dart';
 
+// ────────── Amount Input Widget ──────────
 class AmountInput extends StatelessWidget {
   final TextEditingController controller;
   final String? errorText;
@@ -33,6 +37,7 @@ class AmountInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ────────── Label ──────────
         Text(
           loc.amount,
           style: textTheme.bodySmall?.copyWith(
@@ -41,6 +46,7 @@ class AmountInput extends StatelessWidget {
           ),
         ),
         SizedBox(height: 8.h),
+        // ────────── Input field with currency symbol ──────────
         Container(
           height: isTablet ? 56.h : 50.h,
           decoration: BoxDecoration(
@@ -51,12 +57,14 @@ class AmountInput extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(width: 16.w),
+              // Currency symbol
               Text(
                 locProvider.currencySymbol,
                 style: textTheme.bodyMedium?.copyWith(
                   fontSize: isTablet ? 18.sp : 16.sp,
                 ),
               ),
+              // Amount input field
               Expanded(
                 child: TextFormField(
                   controller: controller,
@@ -82,6 +90,7 @@ class AmountInput extends StatelessWidget {
                   onSaved: onSaved,
                 ),
               ),
+              // Transfer mode toggle button
               IconButton(
                 icon: Icon(
                   Icons.autorenew_rounded,
@@ -92,6 +101,7 @@ class AmountInput extends StatelessWidget {
             ],
           ),
         ),
+        // ────────── Error message ──────────
         if (errorText != null)
           Padding(
             padding: EdgeInsets.only(top: 4.h),
