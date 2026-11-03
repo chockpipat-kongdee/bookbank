@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   // ────────── Build navigation item ──────────
-  Widget _buildNavItem(int index, IconData icon) {
+  Widget _buildNavItem(int index, IconData icon, String label) {
     bool isSelected = currentIndex == index;
     final theme = Theme.of(context);
 
@@ -52,6 +52,19 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Active indicator
+            if (isSelected) ... [
+              Container(
+                width: 40.w,
+                height: 1.h,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+            ],
+            SizedBox(height: 8.h),
+
             // Icons
             Icon(
               icon,
@@ -61,18 +74,16 @@ class _HomePageState extends State<HomePage> {
               size: 23.sp,
             ),
 
-            // Active indicator
-            if (isSelected) ...[
-              SizedBox(height: 6.h),
-              Container(
-                width: 24.w,
-                height: 3.h,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.onPrimary,
-                  borderRadius: BorderRadius.circular(1.5.r),
-                ),
+            // label
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurfaceVariant,
+                fontSize: 12.sp,
               ),
-            ],
+            ),
           ],
         ),
       ),
@@ -88,9 +99,8 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       body: pages[currentIndex],
       bottomNavigationBar: SafeArea(
-        child: Container(
+        child: SizedBox(
           height: 80.h,
-          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -103,17 +113,20 @@ class _HomePageState extends State<HomePage> {
                   height: 65.h,
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceBright,
-                    borderRadius: BorderRadius.circular(35.r),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(14.r),
+                      topRight: Radius.circular(14.r),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildNavItem(0, Icons.home_rounded),
-                      _buildNavItem(1, Icons.list_alt_rounded),
-                      SizedBox(width: 80.w),
-                      _buildNavItem(3, Icons.area_chart_rounded),
-                      _buildNavItem(4, Icons.edit_square),
+                      _buildNavItem(0, Icons.home_rounded, 'Home'),
+                      _buildNavItem(1, Icons.list_alt_rounded, 'Records'),
+                      SizedBox(width: 50.w),
+                      _buildNavItem(3, Icons.area_chart_rounded, 'Charts'),
+                      _buildNavItem(4, Icons.edit_square, 'Notes'),
                     ],
                   ),
                 ),
