@@ -7,6 +7,7 @@ class AppLocalizations {
     // English
     'en': {
       // Header / Menu
+      'header_description': 'Save your entries',
       'edit_group': 'Edit Group',
       'dark_theme': 'Dark Theme',
       'change_language': 'Change Language',
@@ -16,6 +17,12 @@ class AppLocalizations {
       'app_description':
           '        An app for tracking your income and expenses that also shows spending trends, helping you plan your finances more effectively. Regarding security, your data is stored exclusively on your device.',
       'developer': 'Developer',
+
+      // Navigation
+      'home': 'Home',
+      'record': 'Record',
+      'charts': 'Charts',
+      'settings': 'Settings',
 
       // Language names
       'lang_thai': 'Thai',
@@ -49,7 +56,6 @@ class AppLocalizations {
       'not_enough_data': 'Not enough data',
 
       // Record screen
-      'record': 'Record',
       'transaction_history': 'Transaction History',
       'all': 'All',
       'search': 'Search',
@@ -217,6 +223,7 @@ If you have any questions about this privacy policy, please contact the develope
     // Thai
     'th': {
       // Header / Menu
+      'header_description': 'บันทึกรายรับรายจ่ายของคุณ',
       'edit_group': 'แก้ไขกลุ่ม',
       'dark_theme': 'โหมดมืด',
       'change_language': 'เปลี่ยนภาษา',
@@ -226,6 +233,12 @@ If you have any questions about this privacy policy, please contact the develope
       'app_description':
           '        แอปพลิเคชันจัดการการประวัติรายรับ-รายจ่าย พร้อมบอกแนวโน้มการใช้จ่ายช้วยให้คุณสามารถวางแผนการเงินได้ดีขึ้น ในด้านความปลอดภัย เราได้จัดการข้อมูลโดยการเก็บไว้ในเครื่องของคุณเท่านั้น',
       'developer': 'ผู้พัฒนา',
+
+      // Navigation
+      'home': 'หน้าหลัก',
+      'record': 'บันทึก',
+      'charts': 'กราฟ',
+      'settings': 'ตั้งค่า',
 
       // Language names
       'lang_thai': 'ไทย',
@@ -259,7 +272,6 @@ If you have any questions about this privacy policy, please contact the develope
       'not_enough_data': 'ไม่มีข้อมูล',
 
       // Record screen
-      'record': 'บันทึก',
       'transaction_history': 'ประวัติธุรกรรม',
       'all': 'ทั้งหมด',
       'search': 'ค้นหา',
@@ -427,6 +439,7 @@ If you have any questions about this privacy policy, please contact the develope
     // Chinese (Simplified)
     'zh': {
       // Header / Menu
+      'header_description': '记录您的收入和支出',
       'edit_group': '编辑分组',
       'dark_theme': '深色主题',
       'change_language': '更改语言',
@@ -436,6 +449,12 @@ If you have any questions about this privacy policy, please contact the develope
       'app_description':
           '        款收支记账应用，可展示消费趋势，助您更高效地规划财务。在安全性方面，您的数据仅存储于您的设备中',
       'developer': '开发者',
+
+      // Navigation
+      'home': '首页',
+      'record': '记录',
+      'charts': '图表',
+      'settings': '设置',
 
       // Language names
       'lang_thai': '泰语',
@@ -469,7 +488,6 @@ If you have any questions about this privacy policy, please contact the develope
       'not_enough_data': '没有足够数据',
 
       // Record screen
-      'record': '记录',
       'transaction_history': '交易历史',
       'all': '全部',
       'search': '搜索',
@@ -640,6 +658,7 @@ If you have any questions about this privacy policy, please contact the develope
   }
 
   // Header / Menu
+  String get headerDescription => translate('header_description');
   String get editGroup => translate('edit_group');
   String get darkTheme => translate('dark_theme');
   String get changeLanguage => translate('change_language');
@@ -648,14 +667,23 @@ If you have any questions about this privacy policy, please contact the develope
   String get appVersion => translate('app_version');
   String get appDescription => translate('app_description');
   String get developer => translate('developer');
+
+  // Navigation
+  String get home => translate('home');
+  String get record => translate('record');
+  String get charts => translate('charts');
+  String get settings => translate('settings');
+
   // Language names
   String get langThai => translate('lang_thai');
   String get langEnglish => translate('lang_english');
   String get langChinese => translate('lang_chinese');
+
   // Currency names
   String get currencyBaht => translate('currency_baht');
   String get currencyDollar => translate('currency_dollar');
   String get currencyYuan => translate('currency_yuan');
+
   // Dashboard
   String get totalBalance => translate('total_balance');
   String get bank => translate('bank');
@@ -667,6 +695,7 @@ If you have any questions about this privacy policy, please contact the develope
   String get unallocated => translate('unallocated');
   String get transactions => translate('transactions');
   String get from => translate('from');
+
   // Charts
   String get dashboard => translate('dashboard');
   String get viewStats => translate('view_stats');
@@ -675,8 +704,8 @@ If you have any questions about this privacy policy, please contact the develope
   String get monthlyData => translate('monthly_data');
   String get net => translate('net');
   String get notEnoughData => translate('not_enough_data');
+
   // Record screen
-  String get record => translate('record');
   String get transactionHistory => translate('transaction_history');
   String get all => translate('all');
   String get search => translate('search');
@@ -689,21 +718,25 @@ If you have any questions about this privacy policy, please contact the develope
   String get view => translate('view');
   String get edit => translate('edit');
   String get delete => translate('delete');
+
   // Add transaction
   String get addList => translate('add_list');
   String get moneyList => translate('money_list');
   String get moneyPosition => translate('money_position');
   String get category => translate('category');
   String get save => translate('save');
+
   // Transfer
   String get transfer => translate('transfer');
   String get alternate => translate('alternate');
   String get anonymous => translate('anonymous');
+
   // Record detail
   String get moneyListLabel => translate('money_list_label');
   String get moneyPositionLabel => translate('money_position_label');
   String get group => translate('group');
   String get dateLabel => translate('date_label');
+
   // Notebook
   String get notebook => translate('notebook');
   String get notesSubtitle => translate('notes_subtitle');
@@ -716,30 +749,37 @@ If you have any questions about this privacy policy, please contact the develope
   String get noteDeleted => translate('note_deleted');
   String get noRecord => translate('noRecord');
   String get addNotePrompt => translate('addNotePrompt');
+
   // Action feedback
   String get addedSuccess => translate('added_success');
   String get updatedSuccess => translate('updated_success');
   String get deletedSuccess => translate('deleted_success');
   String get deleteConfirm => translate('delete_confirm');
+
   // Popup
   String get unallocatedFunds => translate('unallocated_funds');
   String get allMoneyInGroup => translate('all_money_in_group');
   String get thisIs => translate('this_is');
   String get outOfTotal => translate('out_of_total');
   String get target => translate('target');
+
   // General
   String get cancel => translate('cancel');
   String get confirm => translate('confirm');
   String get pleaseEnterAmount => translate('please_enter_amount');
+
   // Group settings
   String get icon => translate('icon');
   String get color => translate('color');
+
   // Notebook actions
   String get pin => translate('pin');
   String get unpin => translate('unpin');
+
   // Transaction fields
   String get title => translate('title');
   String get content => translate('content');
+
   // Note editor
   String get addNote => translate('addNote');
   String get noteColor => translate('note_color');
@@ -747,24 +787,29 @@ If you have any questions about this privacy policy, please contact the develope
   String get enterNoteTitle => translate('enter_note_title');
   String get enterNoteContent => translate('enter_note_content');
   String get enterContent => translate('enter_content');
+
   // Note categories
   String get categoryAll => translate('category_all');
   String get categoryGeneral => translate('category_general');
   String get categoryFinance => translate('category_finance');
   String get categoryGoals => translate('category_goals');
+
   // Category suggestions
   String get categoryFood => translate('category_food');
   String get categoryTransport => translate('category_transport');
   String get categoryShopping => translate('category_shopping');
   String get categoryEntertainment => translate('category_entertainment');
   String get categoryBills => translate('category_bills');
+
   // Note editor
   String get editNote => translate('edit_note');
   String get saveChanges => translate('save_changes');
   String get createNote => translate('create_note');
+
   // Group settings
   String get enableSavingsGoal => translate('enable_savings_goal');
   String get savingsGoalAmount => translate('savings_goal_amount');
+
   // Month abbreviations
   String get monthJan => translate('month_jan');
   String get monthFeb => translate('month_feb');
@@ -778,6 +823,7 @@ If you have any questions about this privacy policy, please contact the develope
   String get monthOct => translate('month_oct');
   String get monthNov => translate('month_nov');
   String get monthDec => translate('month_dec');
+
   // Onboarding
   String get welcomeTitle => translate('welcome_title');
   String get welcomeSubtitle => translate('welcome_subtitle');
@@ -792,6 +838,7 @@ If you have any questions about this privacy policy, please contact the develope
   String get currencyBahtDisplay => translate('currency_baht_display');
   String get currencyDollarDisplay => translate('currency_dollar_display');
   String get currencyYuanDisplay => translate('currency_yuan_display');
+
   // transfer
   String get transferAmountNotEnough => translate('transfer_amount_not_enough');
   String get transferTo => translate('transfer_to');

@@ -1,4 +1,5 @@
 // ────────── Package Imports ──────────
+import 'package:bookbank/core/localization/localization_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,6 +9,8 @@ import 'package:bookbank/features/add_transaction/add_transaction_screen.dart';
 import 'package:bookbank/features/charts/chart_screen.dart';
 import 'package:bookbank/features/records/record_screen.dart';
 import 'package:bookbank/features/notebook/noteBook_screen.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:provider/provider.dart';
 
 // ────────── Stateful Widget ──────────
 class HomePage extends StatefulWidget {
@@ -63,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ],
-            SizedBox(height: 8.h),
+            SizedBox(height: 12.h),
 
             // Icons
             Icon(
@@ -71,8 +74,9 @@ class _HomePageState extends State<HomePage> {
               color: isSelected
                   ? theme.colorScheme.onPrimary
                   : theme.colorScheme.onSurfaceVariant,
-              size: 23.sp,
+              size: 18.sp,
             ),
+            SizedBox(height: 2.h),
 
             // label
             Text(
@@ -81,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 color: isSelected
                     ? theme.colorScheme.onPrimary
                     : theme.colorScheme.onSurfaceVariant,
-                fontSize: 12.sp,
+                fontSize: 10.sp,
               ),
             ),
           ],
@@ -94,6 +98,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final locProvider = Provider.of<LocalizationProvider>(context);
+    final loc = locProvider.loc;
 
     return Scaffold(
       extendBody: true,
@@ -122,11 +128,11 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildNavItem(0, Icons.home_rounded, 'Home'),
-                      _buildNavItem(1, Icons.list_alt_rounded, 'Records'),
+                      _buildNavItem(0, LucideIcons.house, loc.home),
+                      _buildNavItem(1, LucideIcons.layoutList, loc.records),
                       SizedBox(width: 50.w),
-                      _buildNavItem(3, Icons.area_chart_rounded, 'Charts'),
-                      _buildNavItem(4, Icons.edit_square, 'Notes'),
+                      _buildNavItem(3, LucideIcons.chartNoAxesCombined, loc.charts),
+                      _buildNavItem(4, LucideIcons.notepadText, loc.notes),
                     ],
                   ),
                 ),

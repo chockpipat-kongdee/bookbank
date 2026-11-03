@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-// ────────── Theme & localization ──────────
-import 'package:bookbank/core/theme/app_theme.dart';
+// ────────── localization ──────────
 import 'package:bookbank/core/localization/localization_provider.dart';
 
 // ────────── Widgets ──────────
@@ -38,84 +38,118 @@ class Header extends StatelessWidget {
                 // ────────── App name and logo ──────────
                 Row(
                   children: [
-                    Consumer<ThemeProvider>(
-                      builder: (context, themeProvider, child) {
-                        return Image.asset(
-                          themeProvider.isDarkMode
-                              ? 'lib/core/icons/BookBank_Logo 3.png'
-                              : 'lib/core/icons/BookBank_Logo 1.png',
-                          width: 35.w,
-                          height: 35.h,
-                        );
-                      },
+                    Image.asset(
+                      'lib/core/icons/tangrao_logo1.png',
+                      width: 50.w,
+                      height: 50.h,
                     ),
                     SizedBox(width: 8.w),
 
-                    Text(
-                      'BookBank',
-                      style: textTheme.titleLarge?.copyWith(fontSize: 20.sp),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tangrao',
+                          style: textTheme.titleLarge?.copyWith(
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                        SizedBox(height: 4.h),
+
+                        Text(
+                          loc.headerDescription,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: 12.sp,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
 
-                // ────────── Menu button ──────────
-                PopupMenuButton<String>(
-                  icon: Icon(Icons.menu, size: 20.sp),
-                  offset: Offset(70.w, 50.h),
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      theme.colorScheme.surface,
+                Row(
+                  children: [
+                    // ────────── warn button ──────────
+                    IconButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Not yet activated')),
+                        );
+                      },
+                      style: IconButton.styleFrom(
+                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                      ),
+                      icon: Icon(LucideIcons.bell, size: 18.sp),
                     ),
-                    side: WidgetStatePropertyAll(
-                      BorderSide(color: theme.colorScheme.outline),
-                    ),
-                  ),
+                    SizedBox(width: 8.w),
 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    side: BorderSide(color: theme.colorScheme.onSurfaceVariant),
-                  ),
+                    // ────────── Popup menu button ──────────
+                    PopupMenuButton<String>(
+                      icon: Icon(Icons.menu, size: 20.sp),
+                      offset: Offset(70.w, 50.h),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          theme.colorScheme.surface,
+                        ),
+                        side: WidgetStatePropertyAll(
+                          BorderSide(color: theme.colorScheme.outline),
+                        ),
+                      ),
 
-                  // Menu item selection handler
-                  onSelected: (String value) {
-                    if (value == 'edit_group') {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(child: EditGroupSgreen()),
-                      );
-                    } else if (value == 'about') {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(child: AboutSgreen()),
-                      );
-                    }
-                  },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                        side: BorderSide(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
 
-                  // ────────── Menu items ──────────
-                  itemBuilder: (BuildContext context) => [
-                    // Edit Category
-                    PopupMenuItem<String>(
-                      value: 'edit_group',
-                      child: MenuRow(icon: Icons.edit, label: loc.editGroup),
-                    ),
+                      // Menu item selection handler
+                      onSelected: (String value) {
+                        if (value == 'edit_group') {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                Dialog(child: EditGroupSgreen()),
+                          );
+                        } else if (value == 'about') {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Dialog(child: AboutSgreen()),
+                          );
+                        }
+                      },
 
-                    // Dark Theme
-                    PopupMenuItem<String>(
-                      enabled: false, // handled by Switch inside
-                      padding: EdgeInsets.zero,
-                      child: DarkThemeRow(label: loc.darkTheme),
-                    ),
+                      // ────────── Menu items ──────────
+                      itemBuilder: (BuildContext context) => [
+                        // Edit Category
+                        PopupMenuItem<String>(
+                          value: 'edit_group',
+                          child: MenuRow(
+                            icon: Icons.edit,
+                            label: loc.editGroup,
+                          ),
+                        ),
 
-                    // Change Language
-                    _buildLanguageItem(context, loc, locProvider, theme),
+                        // Dark Theme
+                        PopupMenuItem<String>(
+                          enabled: false, // handled by Switch inside
+                          padding: EdgeInsets.zero,
+                          child: DarkThemeRow(label: loc.darkTheme),
+                        ),
 
-                    // Change Currency
-                    _buildCurrencyItem(context, loc, locProvider, theme),
+                        // Change Language
+                        _buildLanguageItem(context, loc, locProvider, theme),
 
-                    // About
-                    PopupMenuItem<String>(
-                      value: 'about',
-                      child: MenuRow(icon: Icons.info, label: loc.about),
+                        // Change Currency
+                        _buildCurrencyItem(context, loc, locProvider, theme),
+
+                        // About
+                        PopupMenuItem<String>(
+                          value: 'about',
+                          child: MenuRow(icon: Icons.info, label: loc.about),
+                        ),
+                      ],
                     ),
                   ],
                 ),
