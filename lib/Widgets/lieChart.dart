@@ -1,6 +1,6 @@
 // ────────── Package & Theme Imports ──────────
 import 'package:fl_chart/fl_chart.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
+import 'package:flutter/material.dart';
 
 // ────────── Create Segments with Area ──────────
 List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
@@ -12,7 +12,7 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
 
     // ────────── Check if both points are on the same side of x-axis ──────────
     if ((start.y >= 0 && end.y >= 0) || (start.y < 0 && end.y < 0)) {
-      final color = start.y >= 0 ? AppColors.green : AppColors.red;
+      final color = start.y >= 0 ? Colors.green : Colors.red;
 
       // Add segment to list
       segments.add(
@@ -38,7 +38,7 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
     final zeroPoint = FlSpot(x0, 0);
 
     // ────────── Create first segment ──────────
-    final color1 = start.y >= 0 ? AppColors.green : AppColors.red;
+    final color1 = start.y >= 0 ? Colors.green : Colors.red;
 
     // ────────── Add first segment to list ──────────
     segments.add(
@@ -56,7 +56,7 @@ List<LineChartBarData> createSegmentsWithArea(List<FlSpot> spots) {
     );
 
     // ────────── Create second segment ──────────
-    final color2 = end.y >= 0 ? AppColors.green : AppColors.red;
+    final color2 = end.y >= 0 ? Colors.green : Colors.red;
 
     // ────────── Add second segment to list ──────────
     segments.add(

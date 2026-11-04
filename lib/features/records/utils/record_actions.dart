@@ -73,10 +73,10 @@ Future<void> viewRecord(BuildContext context, MyData item) async {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: isIncome
-                            ? AppColors.green
+                            ? Colors.green
                             : item.moneyType == 'transfer'
-                            ? AppColors.orange
-                            : AppColors.red,
+                            ? Colors.orange
+                            : Colors.red,
                       ),
                     ),
                   ),
@@ -194,7 +194,7 @@ Future<void> deleteRecord(
         FilledButton(
           onPressed: () => Navigator.pop(context, true),
           style: FilledButton.styleFrom(
-            backgroundColor: AppColors.red,
+            backgroundColor: Colors.red,
             foregroundColor: AppColors.card,
           ),
           child: Text(loc.delete),
@@ -217,7 +217,7 @@ Future<void> deleteRecord(
           left: 16,
           right: 16,
         ),
-        backgroundColor: AppColors.green,
+        backgroundColor: Colors.green,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         content: Container(
           decoration: BoxDecoration(

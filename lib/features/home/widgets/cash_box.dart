@@ -128,13 +128,6 @@ class _UnallocatedSummaryState extends State<UnallocatedSummary>
                 color: Colors.amber.withValues(alpha: 0.8),
                 width: 2,
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.amber.withValues(alpha: 0.3),
-                  blurRadius: 12,
-                  spreadRadius: 2,
-                ),
-              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,23 +219,6 @@ class _UnallocatedSummaryState extends State<UnallocatedSummary>
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(14.r),
-            border: isHovering
-                ? Border.all(
-                    color: Colors.amber.withValues(alpha: _glowAnim.value),
-                    width: 2,
-                  )
-                : Border.all(color: theme.colorScheme.outline),
-            boxShadow: isHovering
-                ? [
-                    BoxShadow(
-                      color: Colors.amber.withValues(
-                        alpha: 0.25 * _glowAnim.value,
-                      ),
-                      blurRadius: 10,
-                      spreadRadius: 1,
-                    ),
-                  ]
-                : null,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

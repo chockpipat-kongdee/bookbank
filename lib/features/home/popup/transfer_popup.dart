@@ -217,7 +217,7 @@ class _TransferPopupState extends State<TransferPopup>
                   errorStyle: TextStyle(fontSize: AppSize.xs.sp),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14.r),
-                    borderSide: BorderSide(color: LightColors.red, width: 2),
+                    borderSide: BorderSide(color: Colors.red, width: 2),
                   ),
                   filled: true,
                   fillColor: theme.colorScheme.outline.withValues(alpha: 0.15),

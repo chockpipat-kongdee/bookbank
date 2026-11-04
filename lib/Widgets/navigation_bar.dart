@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 width: 40.w,
                 height: 1.h,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.onPrimary,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
               ),
@@ -72,8 +72,8 @@ class _HomePageState extends State<HomePage> {
             Icon(
               icon,
               color: isSelected
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.onSurfaceVariant,
+                  ? theme.colorScheme.surfaceContainerHighest
+                  : theme.colorScheme.outline,
               size: 18.sp,
             ),
             SizedBox(height: 2.h),
@@ -83,8 +83,8 @@ class _HomePageState extends State<HomePage> {
               label,
               style: TextStyle(
                 color: isSelected
-                    ? theme.colorScheme.onPrimary
-                    : theme.colorScheme.onSurfaceVariant,
+                    ? theme.colorScheme.surfaceContainerHighest
+                    : theme.colorScheme.outline,
                 fontSize: 10.sp,
               ),
             ),
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                     height: 70.h,
                     width: 70.w,
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.onPrimary,
+                      color: theme.colorScheme.surfaceContainerHighest,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: theme.colorScheme.surfaceBright,

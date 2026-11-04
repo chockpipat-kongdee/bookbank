@@ -117,19 +117,19 @@ class MonthlyChart extends StatelessWidget {
                 icon: Icons.trending_up,
                 title: loc.income,
                 amount: monthlyIncome,
-                color: AppColors.green,
+                color: Colors.green,
               ),
               BuildSummaryItem(
                 icon: Icons.trending_down,
                 title: loc.expense,
                 amount: monthlyExpense,
-                color: AppColors.red,
+                color: Colors.red,
               ),
               BuildSummaryItem(
                 icon: Icons.account_balance_wallet,
                 title: loc.net,
                 amount: monthlyNet,
-                color: monthlyNet >= 0 ? AppColors.green : AppColors.red,
+                color: monthlyNet >= 0 ? Colors.green : Colors.red,
               ),
             ],
           ),
@@ -144,13 +144,13 @@ class MonthlyChart extends StatelessWidget {
                   LineChartBarData(
                     spots: spots,
                     isCurved: true,
-                    color: AppColors.blue,
+                    color: Colors.blue,
                     barWidth: 3.w,
                     isStrokeCapRound: true,
                     dotData: FlDotData(show: true),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: AppColors.blue.withValues(alpha: 0.3),
+                      color: Colors.blue.withValues(alpha: 0.3),
                     ),
                   ),
                 ],
@@ -206,7 +206,7 @@ class MonthlyChart extends StatelessWidget {
                 lineTouchData: LineTouchData(
                   enabled: true,
                   touchTooltipData: LineTouchTooltipData(
-                    getTooltipColor: (touchedSpot) => AppColors.red,
+                    getTooltipColor: (touchedSpot) => Colors.red,
                     getTooltipItems: (touchedSpots) {
                       return touchedSpots.map((spot) {
                         return LineTooltipItem(

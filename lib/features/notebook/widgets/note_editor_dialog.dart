@@ -141,7 +141,7 @@ class _NoteEditorDialogState extends State<NoteEditorDialog> {
               left: 16.w,
               right: 16.w,
             ),
-            backgroundColor: AppColors.green,
+            backgroundColor: Colors.green,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

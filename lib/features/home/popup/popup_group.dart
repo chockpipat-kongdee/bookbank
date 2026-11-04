@@ -206,7 +206,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 height: 10.h,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: AppColors.green,
+                    color: Colors.green,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
@@ -233,7 +233,7 @@ class _PopupGroupState extends State<PopupGroup> {
                 height: 10.h,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: AppColors.red,
+                    color: Colors.red,
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),

@@ -63,7 +63,7 @@ class DashboardSummary extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(14.r),
-          border: Border.all(color: theme.colorScheme.outline),
+          border: Border.all(color: theme.colorScheme.outlineVariant),
         ),
         child: Column(
           children: [
@@ -109,7 +109,7 @@ class DashboardSummary extends StatelessWidget {
             SizedBox(height: 8.h),
 
             // Divider
-            Divider(color: theme.colorScheme.onSurfaceVariant),
+            Divider(color: theme.colorScheme.outline),
 
             // ────────── Money Position ──────────
             Row(
@@ -126,8 +126,8 @@ class DashboardSummary extends StatelessWidget {
 
                 Container(
                   width: 1,
-                  height: 60.h,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  height: 55.h,
+                  color: theme.colorScheme.outline,
                 ),
 
                 _buildBalanceItem(
@@ -141,8 +141,8 @@ class DashboardSummary extends StatelessWidget {
 
                 Container(
                   width: 1,
-                  height: 60.h,
-                  color: theme.colorScheme.onSurfaceVariant,
+                  height: 55.h,
+                  color: theme.colorScheme.outline,
                 ),
 
                 _buildBalanceItem(
@@ -171,25 +171,34 @@ class DashboardSummary extends StatelessWidget {
     required LocalizationProvider locProvider,
   }) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
 
     return SizedBox(
       width: 80.w,
-      height: 60.h,
+      height: 55.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8.h),
+          SizedBox(height: 4.h),
           Row(
             children: [
               icon != null
-                  ? Icon(icon, size: 16.sp, color: theme.iconTheme.color)
+                  ? Icon(
+                      icon,
+                      size: 16.sp,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    )
                   : SizedBox.shrink(),
 
               icon != null ? SizedBox(width: 8.w) : SizedBox.shrink(),
 
-              Text(label, style: textTheme.bodySmall),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: AppSize.s.sp,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
 

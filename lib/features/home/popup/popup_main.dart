@@ -104,21 +104,21 @@ class PopupMain extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: AppColors.green),
-                    color: AppColors.green.withValues(alpha: 0.1),
+                    border: Border.all(color: Colors.green),
+                    color: Colors.green.withValues(alpha: 0.1),
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.trending_up,
-                        color: AppColors.green,
+                        color: Colors.green,
                         size: 11.sp,
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         '$incomeExpensePct%',
                         style: TextStyle(
-                          color: AppColors.green,
+                          color: Colors.green,
                           fontSize: 11.sp,
                         ),
                       ),
@@ -181,7 +181,7 @@ class PopupMain extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: AppColors.green,
+                    color: Colors.green,
                   ),
                 ),
               ),
@@ -205,7 +205,7 @@ class PopupMain extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: AppColors.red,
+                    color: Colors.red,
                   ),
                 ),
               ),

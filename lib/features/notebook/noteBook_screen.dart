@@ -74,7 +74,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                         left: 16.w,
                         right: 16.w,
                       ),
-                      backgroundColor: AppColors.green,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -170,7 +170,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               loc.delete,
-              style: TextStyle(color: AppColors.red),
+              style: TextStyle(color: Colors.red),
             ),
           ),
         ],
@@ -454,7 +454,7 @@ class _NoteBookScreenState extends State<NoteBookScreen> {
                           child: Icon(
                             Icons.delete,
                             size: 20.sp,
-                            color: AppColors.red,
+                            color: Colors.red,
                           ),
                         ),
                       ),

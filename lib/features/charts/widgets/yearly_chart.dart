@@ -83,19 +83,19 @@ class YearlyChart extends StatelessWidget {
                 icon: Icons.trending_up,
                 title: loc.income,
                 amount: yearlyIncome,
-                color: AppColors.green,
+                color: Colors.green,
               ),
               BuildSummaryItem(
                 icon: Icons.trending_down,
                 title: loc.expense,
                 amount: yearlyExpense,
-                color: AppColors.red,
+                color: Colors.red,
               ),
               BuildSummaryItem(
                 icon: Icons.account_balance_wallet,
                 title: loc.net,
                 amount: yearlyNet,
-                color: yearlyNet >= 0 ? AppColors.green : AppColors.red,
+                color: yearlyNet >= 0 ? Colors.green : Colors.red,
               ),
             ],
           ),
@@ -176,7 +176,7 @@ class YearlyChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    getTooltipColor: (group) => AppColors.red,
+                    getTooltipColor: (group) => Colors.red,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       final months = [
                         loc.monthJan,
@@ -241,7 +241,7 @@ class YearlyChart extends StatelessWidget {
         barRods: [
           BarChartRodData(
             toY: spot.y,
-            color: spot.y >= 0 ? AppColors.green : AppColors.red,
+            color: spot.y >= 0 ? Colors.green : Colors.red,
             width: 10.w,
             borderRadius: BorderRadius.circular(4.r),
           ),

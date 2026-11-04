@@ -59,7 +59,7 @@ class Header extends StatelessWidget {
                           loc.headerDescription,
                           style: textTheme.bodyMedium?.copyWith(
                             fontSize: 12.sp,
-                            color: theme.colorScheme.onSurfaceVariant,
+                            color: theme.colorScheme.outline,
                           ),
                         ),
                       ],
@@ -78,7 +78,7 @@ class Header extends StatelessWidget {
                       },
                       style: IconButton.styleFrom(
                         backgroundColor:
-                            theme.colorScheme.surfaceContainerHighest,
+                            theme.colorScheme.surface,
                       ),
                       icon: Icon(LucideIcons.bell, size: 18.sp),
                     ),
@@ -93,14 +93,14 @@ class Header extends StatelessWidget {
                           theme.colorScheme.surface,
                         ),
                         side: WidgetStatePropertyAll(
-                          BorderSide(color: theme.colorScheme.outline),
+                          BorderSide(color: theme.colorScheme.outlineVariant),
                         ),
                       ),
 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                         side: BorderSide(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: theme.colorScheme.outline,
                         ),
                       ),
 

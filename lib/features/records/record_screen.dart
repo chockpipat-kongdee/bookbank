@@ -170,7 +170,7 @@ class _RecordScreenState extends State<RecordScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               loc.delete,
-              style: TextStyle(color: AppColors.red),
+              style: TextStyle(color: Colors.red),
             ),
           ),
         ],
@@ -339,7 +339,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 child: Icon(
                                   Icons.delete,
                                   size: 20.sp,
-                                  color: AppColors.red,
+                                  color: Colors.red,
                                 ),
                               ),
                             ),

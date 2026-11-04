@@ -16,77 +16,15 @@ class AppSize {
   static const double l = base;
 }
 
-// ────────── Dark Theme Colors ──────────
-
-class DarkColors {
-  static const Color accent = Color(0xFFACF532);
-  static const Color cardBg = Color(0xFF141414);
-  static const Color red = Color(0xFFFF0000);
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color backgroundWhite = Color(0xFFDDDDDD);
-  static const Color chart = Color(0xFF353535);
-  static const Color black = Color(0xFF000000);
-  static const Color gray = Color(0xFF808080);
-  static const Color background = Color(0xFF000000);
-  static const Color text = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFDDDDDD);
-  static const Color border = Color(0x31FFFFFF);
-  static const List<Color> chartColors = [
-    Color(0xFF375FFF),
-    Color(0xFF28FFF4),
-    Color(0xFF17C800),
-    Color(0xFFFF00A1),
-    Color(0xFFFCD34D),
-    Color(0xFFFCA5A5),
-  ];
-}
-
-// ────────── Light Theme Colors ──────────
-
-class LightColors {
-  static const Color accent = Color(0xFF8CDD00);
-  static const Color cardBg = Color(0xFFFFFFFF);
-  static const Color red = Color(0xFFFF0000);
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color backgroundWhite = Color(0xFF333333);
-  static const Color chart = Color(0xFFDDDDDD);
-  static const Color black = Color(0xFF000000);
-  static const Color gray = Color(0xFF808080);
-  static const Color background = Color(0xFFF1F1F1);
-  static const Color text = Color(0xFF000000);
-  static const Color textSecondary = Color(0xFF666666);
-  static const Color border = Color(0xFFE5E5E5);
-  static const List<Color> chartColors = [
-    Color(0xFF375FFF),
-    Color(0xFF28FFF4),
-    Color(0xFF17C800),
-    Color(0xFFFF00A1),
-    Color(0xFFFCD34D),
-    Color(0xFFFCA5A5),
-  ];
-}
-
-// ────────── Shared / Static Colors (theme-independent) ──────────
-
 class AppColors {
-  // Functional
-  static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color green = Color(0xFF00BB06);
-  static const Color red = Color(0xFFFF0000);
-  static const Color amber = Colors.amber;
-  static const Color grey = Colors.grey;
-
-  // Group palette
-  static const Color blue = Colors.blue;
-  static const Color orange = Colors.orange;
-  static const Color purple = Colors.purple;
-  static const Color pink = Colors.pink;
-
-  // Legacy aliases (backward-compatibility)
-  static Color get card => LightColors.cardBg;
-  static Color get border => LightColors.border;
-  static Color get background => LightColors.background;
+  static const Color black = Color(0xFF000000);
+  static const Color grey = Color(0xFFE5E5E5);
+  static const Color darkGrey = Color(0xFF202020);
+  static const Color charcoal = Color(0xFF151515);
+  static const Color mediumGrey = Color(0xFF515151);
+  static const Color background = Color.fromARGB(255, 236, 236, 236);
+  static const Color card = Color(0xFF1E1E1E);
 }
 
 // ────────── Theme Provider ──────────
@@ -122,49 +60,14 @@ class AppTheme {
     return ThemeData(
       fontFamily: 'ADLaMDisplay',
       useMaterial3: true,
-      scaffoldBackgroundColor: LightColors.background,
+      scaffoldBackgroundColor: AppColors.background,
       colorScheme: ColorScheme.light(
-        primary: AppColors.blue,
-        secondary: AppColors.orange,
-        surface: LightColors.cardBg,
-        surfaceBright: LightColors.black,
-        outline: LightColors.border,
-        onSurfaceVariant: Colors.grey[400],
-        error: LightColors.red,
-        onPrimary: LightColors.white,
-        onSecondary: LightColors.white,
-        onSurface: LightColors.text,
-        onError: LightColors.white,
+        surface: AppColors.white,
+        surfaceContainerHighest: AppColors.white,
+        outlineVariant: AppColors.grey,
+        outline: AppColors.mediumGrey,
+        surfaceBright: AppColors.charcoal,
       ),
-
-      textTheme: const TextTheme(
-        labelSmall: TextStyle(fontSize: AppSize.xs, color: LightColors.text),
-        bodySmall: TextStyle(fontSize: AppSize.sm, color: LightColors.text),
-        bodyMedium: TextStyle(fontSize: AppSize.sm, color: LightColors.text),
-        bodyLarge: TextStyle(fontSize: AppSize.base, color: LightColors.text),
-        titleLarge: TextStyle(
-          fontSize: AppSize.xl,
-          fontWeight: FontWeight.bold,
-          color: LightColors.text,
-        ),
-      ),
-
-      dividerTheme: const DividerThemeData(
-        color: LightColors.border,
-        thickness: 1,
-        space: 1,
-      ),
-
-      cardTheme: CardThemeData(
-        color: LightColors.cardBg,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: LightColors.border),
-        ),
-      ),
-
-      iconTheme: const IconThemeData(color: LightColors.text, size: 24),
     );
   }
 
@@ -172,49 +75,14 @@ class AppTheme {
     return ThemeData(
       fontFamily: 'ADLaMDisplay',
       useMaterial3: true,
-      scaffoldBackgroundColor: DarkColors.background,
+      scaffoldBackgroundColor: AppColors.black,
       colorScheme: ColorScheme.dark(
-        primary: AppColors.blue,
-        secondary: AppColors.orange,
-        surface: const Color(0xFF151515),
-        surfaceBright: const Color(0xFF202020),
-        outline: Colors.black,
-        onSurfaceVariant: const Color.fromARGB(255, 81, 81, 81),
-        error: DarkColors.red,
-        onPrimary: DarkColors.white,
-        onSecondary: DarkColors.white,
-        onSurface: DarkColors.text,
-        onError: DarkColors.white,
+        surface: AppColors.charcoal, // card
+        surfaceContainerHighest: AppColors.white,
+        outlineVariant: AppColors.black, // border
+        outline: AppColors.mediumGrey, // line && description
+        surfaceBright: AppColors.charcoal, // navigation bar
       ),
-
-      textTheme: const TextTheme(
-        labelSmall: TextStyle(fontSize: AppSize.xs, color: DarkColors.text),
-        bodySmall: TextStyle(fontSize: AppSize.sm, color: DarkColors.text),
-        bodyMedium: TextStyle(fontSize: AppSize.sm, color: DarkColors.text),
-        bodyLarge: TextStyle(fontSize: AppSize.base, color: DarkColors.text),
-        titleLarge: TextStyle(
-          fontSize: AppSize.xl,
-          fontWeight: FontWeight.bold,
-          color: DarkColors.text,
-        ),
-      ),
-
-      dividerTheme: DividerThemeData(
-        color: DarkColors.border,
-        thickness: 1,
-        space: 1,
-      ),
-
-      cardTheme: CardThemeData(
-        color: DarkColors.cardBg,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: DarkColors.border),
-        ),
-      ),
-
-      iconTheme: const IconThemeData(color: DarkColors.text, size: 24),
     );
   }
 }

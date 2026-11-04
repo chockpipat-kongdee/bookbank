@@ -111,12 +111,8 @@ Widget buildRecordRow(
 
   // Group transfer: moneyList = source groupId, moneyGroup = target groupId
   // Legacy bank/cash transfer: moneyList and moneyGroup are 'bank' or 'cash'
-  final fromLabel = (item.moneyList == 'bank')
-      ? loc.bank
-      : loc.cash;
-  final toLabel = (item.moneyGroup == 'bank')
-      ? loc.bank
-      : loc.cash;
+  final fromLabel = (item.moneyList == 'bank') ? loc.bank : loc.cash;
+  final toLabel = (item.moneyGroup == 'bank') ? loc.bank : loc.cash;
 
   return GestureDetector(
     onTap: onTap,
@@ -127,16 +123,19 @@ Widget buildRecordRow(
         Container(
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: isSelected 
-            ? theme.colorScheme.onSurface.withValues(alpha: 0.1) 
-            : theme.colorScheme.surface,
+            color: isSelected
+                ? theme.colorScheme.onSurface.withValues(alpha: 0.1)
+                : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
             children: [
               if (isMultiSelectMode) ...[
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 11,
+                  ),
                   child: Icon(
                     isSelected ? Icons.check_circle : Icons.circle_outlined,
                     size: 24,
@@ -149,15 +148,15 @@ Widget buildRecordRow(
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: isTransfer
-                          ? AppColors.amber
-                          : (isIncome ? AppColors.green : AppColors.red),
+                          ? Colors.amber
+                          : (isIncome ? Colors.green : Colors.red),
                       width: 1,
                     ),
                     color: isIncome
-                        ? AppColors.green.withValues(alpha: 0.3)
+                        ? Colors.green.withValues(alpha: 0.3)
                         : isTransfer
-                        ? AppColors.amber.withValues(alpha: 0.3)
-                        : AppColors.red.withValues(alpha: 0.3),
+                        ? Colors.amber.withValues(alpha: 0.3)
+                        : Colors.red.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
@@ -168,8 +167,8 @@ Widget buildRecordRow(
                         : Icons.trending_down,
                     size: 16,
                     color: isTransfer
-                        ? AppColors.amber
-                        : (isIncome ? AppColors.green : AppColors.red),
+                        ? Colors.amber
+                        : (isIncome ? Colors.green : Colors.red),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -187,11 +186,17 @@ Widget buildRecordRow(
                       ),
                     ),
                     Text(
-                      isTransfer ? loc.alternate : (item.title == 'Anonymous' ? loc.anonymous : (item.title ?? '')),
+                      isTransfer
+                          ? loc.alternate
+                          : (item.title == 'Anonymous'
+                                ? loc.anonymous
+                                : (item.title ?? '')),
                       style: TextStyle(
                         fontSize: 9.sp,
                         fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.7,
+                        ),
                       ),
                     ),
                   ],
@@ -202,15 +207,12 @@ Widget buildRecordRow(
                 child: Text(
                   isTransfer
                       ? (item.moneyList != 'bank' && item.moneyList != 'cash')
-                          ? loc.transferMoney
-                          : '$fromLabel → $toLabel'
+                            ? loc.transferMoney
+                            : '$fromLabel → $toLabel'
                       : isIncome
                       ? loc.income
                       : loc.expense,
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    color: AppColors.grey,
-                  ),
+                  style: TextStyle(fontSize: 10.sp, color: AppColors.grey),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -259,7 +261,10 @@ Widget buildRecordRow(
                           children: [
                             Icon(Icons.edit, size: AppSize.l),
                             const SizedBox(width: 8),
-                            Text(loc.edit, style: TextStyle(fontSize: AppSize.s)),
+                            Text(
+                              loc.edit,
+                              style: TextStyle(fontSize: AppSize.s),
+                            ),
                           ],
                         ),
                       ),
@@ -269,12 +274,16 @@ Widget buildRecordRow(
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.delete, color: AppColors.red, size: AppSize.l),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                            size: AppSize.l,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             loc.delete,
                             style: TextStyle(
-                              color: AppColors.red,
+                              color: Colors.red,
                               fontSize: AppSize.s,
                             ),
                           ),
