@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 // Local Imports
 import 'package:bookbank/features/home/widgets/dashboard_summary.dart';
-import 'package:bookbank/features/home/widgets/unallocated_summary.dart';
+import 'package:bookbank/features/home/widgets/cash_box.dart';
 import 'package:bookbank/features/home/widgets/group_card.dart';
 import 'package:bookbank/features/home/popup/transfer_popup.dart';
 import 'package:bookbank/utils/calculations.dart';
@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _spots = calc.generateMonthlySpots();
   }
 
-  /// เรียกเมื่อผู้ใช้ drop GroupCard ลงบน GroupCard อื่น
+  /// เรียกเมื่อผู้ใช้ drop GroupCard/CashBox ลงบน GroupCard อื่น (หรือ CashBox)
   Future<void> _onTransferDrop(GroupDragData source, GroupData target) async {
     if (!mounted) return;
 
@@ -307,6 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loc = context.read<LocalizationProvider>().loc;
 
     return Consumer<GroupSettingsProvider>(
       builder: (context, groupProvider, child) {
@@ -374,6 +375,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         theme.colorScheme.error,
                         groupSettings,
                       ).groupColor,
+
+                      // Callback: เมื่อ Group ถูก drop ลงบน CashBox
+                      onTransferDrop: (source) => _onTransferDrop(
+                        source,
+                        GroupData(
+                          groupId: 'CashBox',
+                          groupName: loc.cashBox,
+                          groupCount: 0,
+                          groupAmount: _unallocatedAmount,
+                          groupColor: Colors.amber,
+                          groupIcon: Icons.savings_rounded,
+                          percentage: _unallocatedPercentage,
+                        ),
+                      ),
                     ),
 
                     // Groups Row1

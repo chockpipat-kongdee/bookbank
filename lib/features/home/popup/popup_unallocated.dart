@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bookbank/core/theme/app_theme.dart';
-import 'package:bookbank/features/home/widgets/unallocated_bar.dart';
 import 'package:bookbank/features/home/popup/popup_group_unallocated.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:provider/provider.dart';
@@ -69,8 +68,6 @@ class PopupUnallocated extends StatelessWidget {
     ).toStringAsFixed(1);
     final pureUnallocated = unallocatedAmount;
     calculatePercentage(pureUnallocated, totalIncome).toStringAsFixed(1);
-
-    final double barTotal = totalIncome > 0 ? totalIncome : 1.0;
 
     return Container(
       width: double.infinity,
@@ -148,46 +145,46 @@ class PopupUnallocated extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    MoneyBar(
-                      width: calculateBarWidth(
-                        group1Income,
-                        barTotal,
-                        constraints.maxWidth,
-                      ).toDouble(),
-                      color: group1Color,
-                    ),
-                    MoneyBar(
-                      width: calculateBarWidth(
-                        group2Income,
-                        barTotal,
-                        constraints.maxWidth,
-                      ).toDouble(),
-                      color: group2Color,
-                    ),
-                    MoneyBar(
-                      width: calculateBarWidth(
-                        group3Income,
-                        barTotal,
-                        constraints.maxWidth,
-                      ).toDouble(),
-                      color: group3Color,
-                    ),
-                    MoneyBar(
-                      width: calculateBarWidth(
-                        group4Income,
-                        barTotal,
-                        constraints.maxWidth,
-                      ).toDouble(),
-                      color: group4Color,
-                    ),
-                    MoneyBar(
-                      width: calculateBarWidth(
-                        pureUnallocated,
-                        barTotal,
-                        constraints.maxWidth,
-                      ).toDouble(),
-                      color: AppColors.grey,
-                    ),
+                    // MoneyBar(
+                    //   width: calculateBarWidth(
+                    //     group1Income,
+                    //     barTotal,
+                    //     constraints.maxWidth,
+                    //   ).toDouble(),
+                    //   color: group1Color,
+                    // ),
+                    // MoneyBar(
+                    //   width: calculateBarWidth(
+                    //     group2Income,
+                    //     barTotal,
+                    //     constraints.maxWidth,
+                    //   ).toDouble(),
+                    //   color: group2Color,
+                    // ),
+                    // MoneyBar(
+                    //   width: calculateBarWidth(
+                    //     group3Income,
+                    //     barTotal,
+                    //     constraints.maxWidth,
+                    //   ).toDouble(),
+                    //   color: group3Color,
+                    // ),
+                    // MoneyBar(
+                    //   width: calculateBarWidth(
+                    //     group4Income,
+                    //     barTotal,
+                    //     constraints.maxWidth,
+                    //   ).toDouble(),
+                    //   color: group4Color,
+                    // ),
+                    // MoneyBar(
+                    //   width: calculateBarWidth(
+                    //     pureUnallocated,
+                    //     barTotal,
+                    //     constraints.maxWidth,
+                    //   ).toDouble(),
+                    //   color: AppColors.grey,
+                    // ),
                   ],
                 ),
               );
@@ -223,7 +220,7 @@ class PopupUnallocated extends StatelessWidget {
                 percentage: '$p4%',
               ),
               GroupUnallocatedPopup(
-                title: loc.unallocated,
+                title: loc.cashBox,
                 color: AppColors.grey.withValues(alpha: 0.2),
                 amount: locProvider.formatAmount(unallocatedAmount),
                 percentage: '$pct%',

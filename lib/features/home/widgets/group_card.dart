@@ -204,6 +204,25 @@ class _GroupCardState extends State<GroupCard>
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(20.r),
+            border: isHovering
+                ? Border.all(
+                    color: widget.groupColor.withValues(
+                      alpha: _glowAnim.value,
+                    ),
+                    width: 2,
+                  )
+                : null,
+            boxShadow: isHovering
+                ? [
+                    BoxShadow(
+                      color: widget.groupColor.withValues(
+                        alpha: 0.25 * _glowAnim.value,
+                      ),
+                      blurRadius: 10,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : null,
           ),
           child: _CardContent(
             theme: theme,

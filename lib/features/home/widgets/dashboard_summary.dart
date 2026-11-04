@@ -62,12 +62,12 @@ class DashboardSummary extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(14.r),
           border: Border.all(color: theme.colorScheme.outline),
         ),
         child: Column(
           children: [
-            // Total Balance
+            // ────────── Total Balance ──────────
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -85,7 +85,8 @@ class DashboardSummary extends StatelessWidget {
                     ),
                   ],
                 ),
-                // Line Chart
+
+                // ────────── Line Chart ──────────
                 SizedBox(
                   height: 40.h,
                   width: 160.w,
@@ -106,12 +107,29 @@ class DashboardSummary extends StatelessWidget {
               ],
             ),
             SizedBox(height: 8.h),
+
             // Divider
             Divider(color: theme.colorScheme.onSurfaceVariant),
-            // Money Position
+
+            // ────────── Money Position ──────────
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                _buildBalanceItem(
+                  context,
+                  icon: null,
+                  label: loc.validToday,
+                  balance: bankBalance,
+                  total: totalBalance,
+                  locProvider: locProvider,
+                ),
+
+                Container(
+                  width: 1,
+                  height: 60.h,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+
                 _buildBalanceItem(
                   context,
                   icon: Icons.account_balance_rounded,
@@ -120,11 +138,13 @@ class DashboardSummary extends StatelessWidget {
                   total: totalBalance,
                   locProvider: locProvider,
                 ),
+
                 Container(
                   width: 1,
                   height: 60.h,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
+
                 _buildBalanceItem(
                   context,
                   icon: Icons.account_balance_wallet_rounded,
@@ -141,9 +161,10 @@ class DashboardSummary extends StatelessWidget {
     );
   }
 
+  // ────────── Balance item ──────────
   Widget _buildBalanceItem(
     BuildContext context, {
-    required IconData icon,
+    IconData? icon,
     required String label,
     required double balance,
     required double total,
@@ -153,7 +174,7 @@ class DashboardSummary extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return SizedBox(
-      width: 120.w,
+      width: 80.w,
       height: 60.h,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,25 +183,19 @@ class DashboardSummary extends StatelessWidget {
           SizedBox(height: 8.h),
           Row(
             children: [
-              Icon(icon, size: 16.sp, color: theme.iconTheme.color),
-              SizedBox(width: 8.w),
+              icon != null
+                  ? Icon(icon, size: 16.sp, color: theme.iconTheme.color)
+                  : SizedBox.shrink(),
+
+              icon != null ? SizedBox(width: 8.w) : SizedBox.shrink(),
+
               Text(label, style: textTheme.bodySmall),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                locProvider.formatAmount(balance),
-                style: TextStyle(fontSize: AppSize.m.sp),
-              ),
-              Text(
-                "${total > 0 ? (balance / total * 100).toStringAsFixed(1) : 0}%",
-                style: textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                ),
-              ),
-            ],
+
+          Text(
+            locProvider.formatAmount(balance),
+            style: TextStyle(fontSize: AppSize.m.sp),
           ),
         ],
       ),

@@ -36,13 +36,14 @@ class AppLocalizations {
 
       // Dashboard
       'total_balance': 'Total Balance',
+      'valid_today': 'Valid today',
       'bank': 'Bank',
       'cash': 'Cash',
       'income': 'Income',
       'expense': 'Expense',
       'monthly_income': 'Monthly Income',
       'monthly_expense': 'Monthly Expense',
-      'unallocated': 'Unallocated',
+      'cash_box': 'Cash box',
       'transactions': 'Transactions',
       'from': 'from',
 
@@ -252,13 +253,14 @@ If you have any questions about this privacy policy, please contact the develope
 
       // Dashboard
       'total_balance': 'ยอดรวมทั้งหมด',
+      'valid_today': 'ใช้ได้วันนี้',
       'bank': 'ธนาคาร',
       'cash': 'เงินสด',
       'income': 'รายรับ',
       'expense': 'รายจ่าย',
       'monthly_income': 'รายรับรายเดือน',
       'monthly_expense': 'รายจ่ายรายเดือน',
-      'unallocated': 'ยังไม่จัดสรร',
+      'cash_box': 'กล่องเก็บเงิน',
       'transactions': 'รายการ',
       'from': 'จาก',
 
@@ -468,13 +470,14 @@ If you have any questions about this privacy policy, please contact the develope
 
       // Dashboard
       'total_balance': '总余额',
+      'valid_today': '今天有效',
       'bank': '银行',
       'cash': '现金',
       'income': '收入',
       'expense': '支出',
       'monthly_income': '月收入',
       'monthly_expense': '月支出',
-      'unallocated': '未分配',
+      'cash_box': '钱箱',
       'transactions': '笔',
       'from': '来自',
 
@@ -686,13 +689,14 @@ If you have any questions about this privacy policy, please contact the develope
 
   // Dashboard
   String get totalBalance => translate('total_balance');
+  String get validToday => translate('valid_today');
   String get bank => translate('bank');
   String get cash => translate('cash');
   String get income => translate('income');
   String get expense => translate('expense');
   String get monthlyIncome => translate('monthly_income');
   String get monthlyExpense => translate('monthly_expense');
-  String get unallocated => translate('unallocated');
+  String get cashBox => translate('cash_box');
   String get transactions => translate('transactions');
   String get from => translate('from');
 

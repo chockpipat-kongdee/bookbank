@@ -54,7 +54,6 @@ class Header extends StatelessWidget {
                             fontSize: 20.sp,
                           ),
                         ),
-                        SizedBox(height: 4.h),
 
                         Text(
                           loc.headerDescription,
@@ -78,7 +77,8 @@ class Header extends StatelessWidget {
                         );
                       },
                       style: IconButton.styleFrom(
-                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                        backgroundColor:
+                            theme.colorScheme.surfaceContainerHighest,
                       ),
                       icon: Icon(LucideIcons.bell, size: 18.sp),
                     ),

@@ -73,8 +73,7 @@ class FinancialCalculations {
         .where((e) => e.moneyGroup == group && e.moneyType == 'income')
         .fold(
           0.0,
-          (previousValue, element) =>
-              previousValue + element.amount.toDouble(),
+          (previousValue, element) => previousValue + element.amount.toDouble(),
         );
   }
 
@@ -84,8 +83,7 @@ class FinancialCalculations {
         .where((e) => e.moneyGroup == group && e.moneyType == 'expense')
         .fold(
           0.0,
-          (previousValue, element) =>
-              previousValue + element.amount.toDouble(),
+          (previousValue, element) => previousValue + element.amount.toDouble(),
         );
   }
 
@@ -191,9 +189,21 @@ class FinancialCalculations {
 
   // ────────── Unallocated Amount ──────────
   double unallocatedAmount() {
-    return transactions
+    double base = transactions
         .where((e) => e.moneyGroup.isEmpty && e.moneyType == 'income')
         .fold(0.0, (sum, e) => sum + e.amount.toDouble());
+
+    // transfer out CashBox → down
+    double transferOut = transactions
+        .where((e) => e.moneyType == 'transfer' && e.moneyList == 'CashBox')
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
+
+    // transfer in CashBox → add
+    double transferIn = transactions
+        .where((e) => e.moneyType == 'transfer' && e.moneyGroup == 'CashBox')
+        .fold(0.0, (sum, e) => sum + e.amount.toDouble());
+
+    return base - transferOut + transferIn;
   }
 
   // ────────── Monthly Spots ──────────
