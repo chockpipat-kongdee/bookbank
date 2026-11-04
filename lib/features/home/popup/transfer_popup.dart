@@ -49,10 +49,12 @@ class _TransferPopupState extends State<TransferPopup>
       vsync: this,
       duration: const Duration(milliseconds: 350),
     );
+
     _scaleAnim = CurvedAnimation(
       parent: _animController,
       curve: Curves.elasticOut,
     );
+
     _animController.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.requestFocus();
@@ -100,8 +102,8 @@ class _TransferPopupState extends State<TransferPopup>
           padding: EdgeInsets.all(20.r),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(24.r),
-            border: Border.all(color: theme.colorScheme.onSurfaceVariant),
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(color: theme.colorScheme.outline),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -112,7 +114,7 @@ class _TransferPopupState extends State<TransferPopup>
               ),
               SizedBox(height: 20.h),
 
-              // Source → Target visual
+              // ────────── Source → Target visual ──────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -127,20 +129,22 @@ class _TransferPopupState extends State<TransferPopup>
                       children: [
                         Icon(
                           Icons.arrow_forward_rounded,
-                          color: AppColors.grey,
+                          color: theme.colorScheme.outline,
                           size: 22.sp,
                         ),
                         SizedBox(height: 2.h),
+
                         Text(
                           loc.transferTo,
                           style: TextStyle(
                             fontSize: AppSize.xs.sp,
-                            color: AppColors.grey,
+                            color: theme.colorScheme.outline,
                           ),
                         ),
                       ],
                     ),
                   ),
+
                   _GroupChip(
                     name: widget.targetGroupName,
                     color: widget.targetGroupColor,
@@ -148,16 +152,15 @@ class _TransferPopupState extends State<TransferPopup>
                   ),
                 ],
               ),
-
               SizedBox(height: 16.h),
 
-              // Balance info
+              // ────────── Balance info ──────────
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                 decoration: BoxDecoration(
                   color: widget.sourceGroupColor.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(7.r),
                   border: Border.all(
                     color: widget.sourceGroupColor.withValues(alpha: 0.3),
                   ),
@@ -170,13 +173,15 @@ class _TransferPopupState extends State<TransferPopup>
                       color: widget.sourceGroupColor,
                     ),
                     SizedBox(width: 8.w),
+
                     Text(
                       '${loc.transferRemaining} ',
                       style: TextStyle(
                         fontSize: AppSize.xs.sp,
-                        color: AppColors.grey,
+                        color: theme.colorScheme.outline,
                       ),
                     ),
+
                     Text(
                       locProvider.formatAmount(widget.sourceGroupAmount),
                       style: TextStyle(
@@ -188,45 +193,46 @@ class _TransferPopupState extends State<TransferPopup>
                   ],
                 ),
               ),
-
               SizedBox(height: 16.h),
 
-              // Amount Input
+              // ────────── Amount Input ──────────
               TextField(
                 controller: _amountController,
                 focusNode: _focusNode,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
                 ],
+
                 style: TextStyle(fontSize: AppSize.sm.sp),
                 decoration: InputDecoration(
                   hintText: '0.00',
                   hintStyle: TextStyle(
-                    color: AppColors.grey.withValues(alpha: 0.5),
+                    color: theme.colorScheme.outline.withValues(alpha: 0.5),
                     fontSize: AppSize.sm.sp,
                   ),
                   prefixText: locProvider.currencySymbol,
                   prefixStyle: TextStyle(
                     fontSize: AppSize.l.sp,
-                    color: AppColors.grey,
+                    color: theme.colorScheme.outline,
                   ),
                   errorText: _errorText,
                   errorStyle: TextStyle(fontSize: AppSize.xs.sp),
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(7.r),
                     borderSide: BorderSide(color: Colors.red, width: 2),
                   ),
                   filled: true,
                   fillColor: theme.colorScheme.outline.withValues(alpha: 0.15),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(7.r),
                     borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14.r),
+                    borderRadius: BorderRadius.circular(7.r),
                     borderSide: BorderSide(
                       color: widget.sourceGroupColor,
                       width: 2,
@@ -237,15 +243,15 @@ class _TransferPopupState extends State<TransferPopup>
                     vertical: 14.h,
                   ),
                 ),
+
                 onChanged: (_) {
                   if (_errorText != null) setState(() => _errorText = null);
                 },
                 onSubmitted: (_) => _validate(),
               ),
-
               SizedBox(height: 20.h),
 
-              // Buttons
+              // ────────── Transfer Button ──────────
               SizedBox(
                 width: double.infinity,
                 height: 45.h,
@@ -258,7 +264,7 @@ class _TransferPopupState extends State<TransferPopup>
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(7.r),
                       ),
                     ),
                     child: Text(
@@ -272,6 +278,8 @@ class _TransferPopupState extends State<TransferPopup>
                 ),
               ),
               SizedBox(height: 10.h),
+
+              // ────────── Cancel Button ──────────
               SizedBox(
                 width: double.infinity,
                 height: 45.h,
@@ -283,7 +291,7 @@ class _TransferPopupState extends State<TransferPopup>
                       padding: EdgeInsets.symmetric(vertical: 12.h),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(7.r),
                       ),
                     ),
                     child: Text(loc.cancel),
@@ -298,7 +306,7 @@ class _TransferPopupState extends State<TransferPopup>
   }
 }
 
-// ── Helper: Group Chip ────────────────────────────────────────────────────────
+// ────────── Helper: Group Chip ──────────
 
 class _GroupChip extends StatelessWidget {
   final String name;
@@ -319,13 +327,14 @@ class _GroupChip extends StatelessWidget {
           width: 50.w,
           height: 50.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(7.r),
             border: Border.all(color: color),
             color: color.withValues(alpha: 0.15),
           ),
           child: Icon(icon, color: color, size: 24.sp),
         ),
         SizedBox(height: 6.h),
+
         SizedBox(
           width: 70.w,
           child: Text(

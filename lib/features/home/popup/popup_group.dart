@@ -62,11 +62,11 @@ class _PopupGroupState extends State<PopupGroup> {
     final locProvider = Provider.of<LocalizationProvider>(context);
     final loc = locProvider.loc;
 
-    // สร้างข้อมูลกราฟสำหรับหมวดหมู่นี้
+    // Calculate monthly spots for this group
     final calc = FinancialCalculations(_transactions);
     final groupSpots = calc.generateMonthlySpotsForGroup(widget.groupId);
 
-    // คำนวณรายรับ/รายจ่ายเฉพาะเดือนปัจจุบัน
+    // Calculate income/expense for current month
     double totalIncome = calc.monthlyGroupIncome(widget.groupId);
     double totalExpense = calc.monthlyGroupExpense(widget.groupId);
     final net = totalIncome - totalExpense;
@@ -76,14 +76,14 @@ class _PopupGroupState extends State<PopupGroup> {
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: theme.colorScheme.onSurfaceVariant),
+        borderRadius: BorderRadius.circular(14.r),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Close button
+          // ────────── Close button ──────────
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -96,7 +96,7 @@ class _PopupGroupState extends State<PopupGroup> {
             ],
           ),
 
-          // Header
+          // ────────── Header ──────────
           Row(
             children: [
               Row(
@@ -109,16 +109,21 @@ class _PopupGroupState extends State<PopupGroup> {
                       borderRadius: BorderRadius.circular(10.r),
                       color: widget.groupColor.withValues(alpha: 0.2),
                     ),
-                    child: Icon(widget.icon, color: widget.groupColor, size: 24.sp),
+                    child: Icon(
+                      widget.icon,
+                      color: widget.groupColor,
+                      size: 24.sp,
+                    ),
                   ),
                   SizedBox(width: 8.w),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.groupName,
                         style: TextStyle(
-                          color: AppColors.grey,
+                          color: theme.colorScheme.outline,
                           fontSize: AppSize.s.sp,
                         ),
                       ),
@@ -135,24 +140,37 @@ class _PopupGroupState extends State<PopupGroup> {
           ),
           SizedBox(height: 8.h),
 
+          // ────────── Percentage Section ──────────
           Row(
             children: [
               Text(
                 loc.thisIs,
-                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: theme.colorScheme.outline,
+                ),
               ),
+
               Text(
                 '${widget.percentage.toStringAsFixed(1)}%',
-                style: TextStyle(fontSize: AppSize.s.sp),
+                style: TextStyle(
+                  fontSize: AppSize.s.sp,
+                  color: theme.colorScheme.outline,
+                ),
               ),
+
               Text(
                 loc.outOfTotal,
-                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: theme.colorScheme.outline,
+                ),
               ),
             ],
           ),
           SizedBox(height: 16.h),
 
+          // ────────── Savings Goal Section ──────────
           if (widget.savingsGoalEnabled && widget.savingsGoalAmount! > 0) ...[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,6 +186,7 @@ class _PopupGroupState extends State<PopupGroup> {
                   ],
                 ),
                 SizedBox(height: 5.h),
+
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4.r),
                   child: LinearProgressIndicator(
@@ -185,12 +204,15 @@ class _PopupGroupState extends State<PopupGroup> {
             SizedBox(height: 16.h),
           ],
 
-          // Income / Expense summary
+          // ────────── Income / Expense summary ──────────
           Row(
             children: [
               Text(
                 '${loc.monthlyData}: ',
-                style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: theme.colorScheme.outline,
+                ),
               ),
               Text(
                 '${DateFormat('MMMM').format(DateTime.now())} / ${DateTime.now().year}',
@@ -199,6 +221,8 @@ class _PopupGroupState extends State<PopupGroup> {
             ],
           ),
           SizedBox(height: 8.h),
+
+          // ────────── Income / Expense breakdown ──────────
           Row(
             children: [
               SizedBox(
@@ -212,11 +236,16 @@ class _PopupGroupState extends State<PopupGroup> {
                 ),
               ),
               SizedBox(width: 6.w),
+
+              // ────────── Income breakdown ──────────
               Row(
                 children: [
                   Text(
                     '${loc.income}: ',
-                    style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
+                    style: TextStyle(
+                      fontSize: AppSize.xs.sp,
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
                   Text(
                     locProvider.formatAmount(totalIncome),
@@ -226,6 +255,8 @@ class _PopupGroupState extends State<PopupGroup> {
               ),
             ],
           ),
+
+          // ────────── Expense breakdown ──────────
           Row(
             children: [
               SizedBox(
@@ -239,10 +270,16 @@ class _PopupGroupState extends State<PopupGroup> {
                 ),
               ),
               SizedBox(width: 6.w),
+
+              // ────────── Expense breakdown ──────────
               Text(
-                    '${loc.expense}: ',
-                    style: TextStyle(fontSize: AppSize.xs.sp, color: AppColors.grey),
-                  ),
+                '${loc.expense}: ',
+                style: TextStyle(
+                  fontSize: AppSize.xs.sp,
+                  color: theme.colorScheme.outline,
+                ),
+              ),
+
               Text(
                 locProvider.formatAmount(totalExpense),
                 style: TextStyle(fontSize: AppSize.xs.sp),
@@ -251,7 +288,7 @@ class _PopupGroupState extends State<PopupGroup> {
           ),
           SizedBox(height: 8.h),
 
-          // Line Chart
+          // ────────── Line Chart ──────────
           SizedBox(
             height: 60.h,
             width: double.infinity,

@@ -112,7 +112,8 @@ class _GroupCardState extends State<GroupCard>
       onDragStarted: () {
         HapticFeedback.mediumImpact();
       },
-      // การ์ดที่ลอยติดนิ้ว
+
+      // ────────── Feedback (floating card) ──────────
       feedback: Material(
         color: Colors.transparent,
         child: Transform.scale(
@@ -123,7 +124,7 @@ class _GroupCardState extends State<GroupCard>
             padding: EdgeInsets.all(12.r),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(14.r),
               border: Border.all(
                 color: widget.groupColor.withValues(alpha: 0.8),
                 width: 2,
@@ -133,27 +134,32 @@ class _GroupCardState extends State<GroupCard>
           ),
         ),
       ),
-      // การ์ดเดิมตอนกำลัง drag (จางลง)
+
+      // ────────── Child When Dragging ──────────
       childWhenDragging: Opacity(
         opacity: 0.25,
         child: _buildCardShell(theme, locProvider, isHovering: false),
       ),
       child: DragTarget<GroupDragData>(
         onWillAcceptWithDetails: (details) {
-          // ไม่รับ drop จาก group เดียวกัน
           return details.data.groupId != widget.groupId;
         },
+
+        // On Accept With Details
         onAcceptWithDetails: (details) {
           setState(() => _isHovering = false);
           HapticFeedback.lightImpact();
           widget.onTransferDrop?.call(details.data);
         },
+
         onMove: (details) {
           if (!_isHovering) setState(() => _isHovering = true);
         },
+
         onLeave: (_) {
           if (_isHovering) setState(() => _isHovering = false);
         },
+
         builder: (context, candidateData, rejectedData) {
           return GestureDetector(
             onTap: () {
@@ -188,6 +194,7 @@ class _GroupCardState extends State<GroupCard>
     );
   }
 
+  // ────────── Build Card Shell ──────────
   Widget _buildCardShell(
     ThemeData theme,
     LocalizationProvider locProvider, {
@@ -203,26 +210,7 @@ class _GroupCardState extends State<GroupCard>
           padding: EdgeInsets.all(12.r),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(20.r),
-            border: isHovering
-                ? Border.all(
-                    color: widget.groupColor.withValues(
-                      alpha: _glowAnim.value,
-                    ),
-                    width: 2,
-                  )
-                : null,
-            boxShadow: isHovering
-                ? [
-                    BoxShadow(
-                      color: widget.groupColor.withValues(
-                        alpha: 0.25 * _glowAnim.value,
-                      ),
-                      blurRadius: 10,
-                      spreadRadius: 1,
-                    ),
-                  ]
-                : null,
+            borderRadius: BorderRadius.circular(14.r),
           ),
           child: _CardContent(
             theme: theme,
@@ -240,7 +228,7 @@ class _GroupCardState extends State<GroupCard>
   }
 }
 
-// ── Card Content (shared between normal & feedback) ───────────────────────────
+// ────────── Card Content (shared between normal & feedback) ──────────
 
 class _CardContent extends StatelessWidget {
   final ThemeData theme;
@@ -277,34 +265,51 @@ class _CardContent extends StatelessWidget {
               height: 45.h,
               margin: EdgeInsets.only(bottom: 8.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(7.r),
                 border: Border.all(color: groupColor),
                 color: groupColor.withValues(alpha: 0.3),
               ),
               child: Icon(groupIcon, color: groupColor, size: 22.sp),
             ),
-            Icon(Icons.arrow_outward_sharp, size: 20.sp, color: AppColors.grey),
+            Icon(
+              Icons.arrow_outward_sharp,
+              size: 20.sp,
+              color: theme.colorScheme.outline,
+            ),
           ],
         ),
+
         Text(
           groupName,
-          style: TextStyle(color: AppColors.grey, fontSize: AppSize.xs.sp),
+          style: TextStyle(
+            color: theme.colorScheme.onSurfaceVariant,
+            fontSize: AppSize.xs.sp,
+          ),
         ),
+
         Row(
           children: [
             Text(
               locProvider.formatAmount(groupAmount),
-              style: TextStyle(fontSize: AppSize.m.sp),
+              style: TextStyle(
+                fontSize: AppSize.m.sp,
+                color: theme.colorScheme.onSurface,
+              ),
             ),
             const Spacer(),
+
             if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
               Text(
                 locProvider.formatAmount(savingsGoalAmount),
-                style: TextStyle(color: AppColors.grey, fontSize: 11.sp),
+                style: TextStyle(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 11.sp,
+                ),
               ),
             ],
           ],
         ),
+
         if (savingsGoalEnabled && savingsGoalAmount > 0) ...[
           SizedBox(height: 8.h),
           Column(

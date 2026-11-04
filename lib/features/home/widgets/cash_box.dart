@@ -33,7 +33,6 @@ class UnallocatedSummary extends StatefulWidget {
   final Color group3Color;
   final Color group4Color;
 
-  /// Callback เมื่อมีการ drop GroupDragData มาที่ CashBox
   final void Function(GroupDragData source)? onTransferDrop;
 
   const UnallocatedSummary({
@@ -119,14 +118,14 @@ class _UnallocatedSummaryState extends State<UnallocatedSummary>
           scale: 1.06,
           child: Container(
             width: MediaQuery.of(context).size.width - 48.w,
-            height: 60.h,
+            height: 60.5.h,
             padding: EdgeInsets.all(12.r),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(14.r),
               border: Border.all(
                 color: Colors.amber.withValues(alpha: 0.8),
-                width: 2,
+                width: 1.5,
               ),
             ),
             child: Column(
