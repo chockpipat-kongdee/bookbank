@@ -219,6 +219,10 @@ If you have any questions about this privacy policy, please contact the develope
       'transfer_remaining': 'Remaining balance',
       'transfer_money': 'Transfer money',
       'transfer_success': 'Transfer money success',
+
+      // Date time picker
+      'select_date_time': 'Select Date and Time',
+      'time': 'Time',
     },
 
     // Thai
@@ -436,6 +440,10 @@ If you have any questions about this privacy policy, please contact the develope
       'transfer_remaining': 'ยอดคงเหลือ',
       'transfer_money': 'ย้ายเงิน',
       'transfer_success': 'ย้ายเงินสำเร็จ',
+
+      // Date time picker
+      'select_date_time': 'เลือกวันที่และเวลา',
+      'time': 'เวลา',
     },
 
     // Chinese (Simplified)
@@ -651,6 +659,10 @@ If you have any questions about this privacy policy, please contact the develope
       'transfer_remaining': '还剩下',
       'transfer_money': '转账',
       'transfer_success': '转账成功',
+
+      // Date time picker
+      'select_date_time': '选择日期和时间',
+      'time': '时间',
     },
   };
 
@@ -850,4 +862,8 @@ If you have any questions about this privacy policy, please contact the develope
   String get transferRemaining => translate('transfer_remaining');
   String get transferMoney => translate('transfer_money');
   String get transferSuccess => translate('transfer_success');
+
+  // Date time picker
+  String get selectDateTime => translate('select_date_time');
+  String get time => translate('time');
 }

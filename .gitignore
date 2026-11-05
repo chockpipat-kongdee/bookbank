@@ -49,3 +49,5 @@ app.*.map.json
 
 # brag
 brag-output-2026-09-27-084714/
+# Widget Preview related
+.widget_preview/
