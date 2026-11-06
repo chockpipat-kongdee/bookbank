@@ -48,20 +48,29 @@ class _HomePageState extends State<HomePage> {
       },
 
       behavior: HitTestBehavior.opaque,
-      child: SizedBox(
+      child: Container(
         width: 50.w,
         height: 50.h,
+        decoration: BoxDecoration(
+          gradient: isSelected
+              ? LinearGradient(
+                  colors: [Color.fromARGB(255, 65, 65, 65), Colors.transparent],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                )
+              : null,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Active indicator
-            if (isSelected) ... [
+            if (isSelected) ...[
               Container(
-                width: 40.w,
+                width: double.infinity,
                 height: 1.h,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
+                  color: theme.colorScheme.onSurface,
                   borderRadius: BorderRadius.circular(10.r),
                 ),
               ),
@@ -116,9 +125,15 @@ class _HomePageState extends State<HomePage> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 65.h,
+                  height: 73.h,
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surfaceBright,
+                    border: Border(
+                      top: BorderSide(
+                        color: theme.scaffoldBackgroundColor,
+                        width: 8,
+                      ),
+                    ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(14.r),
                       topRight: Radius.circular(14.r),
@@ -130,47 +145,14 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       _buildNavItem(0, LucideIcons.house, loc.home),
                       _buildNavItem(1, LucideIcons.layoutList, loc.records),
-                      SizedBox(width: 50.w),
-                      _buildNavItem(3, LucideIcons.chartNoAxesCombined, loc.charts),
-                      _buildNavItem(4, LucideIcons.notepadText, loc.notes),
-                    ],
-                  ),
-                ),
-              ),
-
-              // ────────── Center button ──────────
-              Positioned(
-                top: 0,
-                child: GestureDetector(
-                  onTap: () {
-                    showAddItemBottomSheet(
-                      context,
-                      onSaved: () {
-                        setState(() {
-                          _homeKey = UniqueKey();
-                          _recordKey = UniqueKey();
-                        });
-                      },
-                    );
-                  },
-
-                  child: Container(
-                    height: 70.h,
-                    width: 70.w,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: theme.colorScheme.surfaceBright,
-                        width: 10,
+                      _buildNavItem(
+                        3,
+                        LucideIcons.chartNoAxesCombined,
+                        loc.charts,
                       ),
-                    ),
-
-                    child: Icon(
-                      Icons.add,
-                      color: theme.colorScheme.surfaceBright,
-                      size: 24.sp,
-                    ),
+                      _buildNavItem(4, LucideIcons.notepadText, loc.notes),
+                      _buildNavItem(2, LucideIcons.settings, loc.settings),
+                    ],
                   ),
                 ),
               ),

@@ -1,16 +1,25 @@
-import 'package:bookbank/core/theme/app_theme.dart';
+// ────────── Packages ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+// ────────── Theme & Localization ──────────
+import 'package:bookbank/core/theme/app_theme.dart';
+import 'package:bookbank/core/localization/localization_provider.dart';
+
+// ────────── Database ──────────
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
+
+// ────────── Records Utils ──────────
 import 'package:bookbank/features/records/utils/record_actions.dart';
 import 'package:bookbank/features/records/utils/record_date_filter.dart';
 import 'package:bookbank/features/records/utils/record_filter.dart';
 import 'package:bookbank/features/records/utils/record_utils.dart';
+
+// ────────── Widgets ──────────
 import 'package:bookbank/features/records/widgets/record_widgets.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
-import 'package:bookbank/core/localization/localization_provider.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -51,9 +60,11 @@ class _RecordScreenState extends State<RecordScreen> {
     });
   }
 
+  // ────────── Filtered Transactions ──────────
   List<MyData> get _filteredTransactions {
     final query = _searchController.text.trim().toLowerCase();
 
+    // Filter by type (income/expense/all)
     var filtered = _allTransactions.where((item) {
       if (_filter == RecordFilter.income && item.moneyType != 'income') {
         return false;
@@ -64,6 +75,7 @@ class _RecordScreenState extends State<RecordScreen> {
       return true;
     }).toList();
 
+    // Date Range Filter
     filtered = filterByDateRange(
       filtered,
       _startDate,
@@ -71,11 +83,18 @@ class _RecordScreenState extends State<RecordScreen> {
       (item) => item.date ?? '',
     );
 
+    // Search Filter
     if (query.isNotEmpty) {
-      final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
+      final locProvider = Provider.of<LocalizationProvider>(
+        context,
+        listen: false,
+      );
       final loc = locProvider.loc;
       filtered = filtered.where((item) {
-        final name = getItemName(item, anonymousText: loc.anonymous).toLowerCase();
+        final name = getItemName(
+          item,
+          anonymousText: loc.anonymous,
+        ).toLowerCase();
         return name.contains(query);
       }).toList();
     }
@@ -83,26 +102,7 @@ class _RecordScreenState extends State<RecordScreen> {
     return filtered;
   }
 
-  bool get _hasDateRange => hasDateRange(_startDate, _endDate);
-  String get _dateRangeLabel => getDateRangeLabel(_startDate, _endDate);
-
-  Future<void> _selectDateRange() async {
-    final picked = await selectDateRange(context, _startDate, _endDate);
-    if (picked != null && mounted) {
-      setState(() {
-        _startDate = picked.start;
-        _endDate = picked.end;
-      });
-    }
-  }
-
-  void _clearDateFilter() {
-    setState(() {
-      _startDate = null;
-      _endDate = null;
-    });
-  }
-
+  // ────────── Record Actions ──────────
   Future<void> _viewRecord(MyData item) async {
     await viewRecord(context, item);
   }
@@ -115,6 +115,7 @@ class _RecordScreenState extends State<RecordScreen> {
     await deleteRecord(context, item, _loadData);
   }
 
+  // ────────── Menu Action Handler ──────────
   void _handleMenuAction(String action, MyData item) {
     if (action == 'view') {
       _viewRecord(item);
@@ -125,6 +126,7 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
+  // ────────── Selection Toggle ──────────
   void _toggleSelection(int id) {
     setState(() {
       if (_selectedIds.contains(id)) {
@@ -139,6 +141,7 @@ class _RecordScreenState extends State<RecordScreen> {
     });
   }
 
+  // ────────── Selection Clearing ──────────
   void _clearSelection() {
     setState(() {
       _selectedIds.clear();
@@ -146,10 +149,14 @@ class _RecordScreenState extends State<RecordScreen> {
     });
   }
 
+  // ────────── Selected Records Deletion ──────────
   Future<void> _deleteSelectedRecords() async {
     if (_selectedIds.isEmpty) return;
 
-    final locProvider = Provider.of<LocalizationProvider>(context, listen: false);
+    final locProvider = Provider.of<LocalizationProvider>(
+      context,
+      listen: false,
+    );
     final loc = locProvider.loc;
 
     final confirmed = await showDialog<bool>(
@@ -157,7 +164,9 @@ class _RecordScreenState extends State<RecordScreen> {
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),
-          side: BorderSide(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         title: Text(loc.delete),
         content: Text('${loc.delete} ${_selectedIds.length} ${loc.records}?'),
@@ -168,15 +177,13 @@ class _RecordScreenState extends State<RecordScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(
-              loc.delete,
-              style: TextStyle(color: Colors.red),
-            ),
+            child: Text(loc.delete, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
     );
 
+    // Execute deletion if confirmed
     if (confirmed == true && mounted) {
       for (final id in _selectedIds) {
         await DatabaseHelper.instance.deleteData(id);
@@ -186,21 +193,7 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
-  Widget _buildFilterTab({
-    required RecordFilter value,
-    required IconData icon,
-    required String label,
-  }) {
-    return buildFilterTab(
-      context: context,
-      value: value,
-      selectedFilter: _filter,
-      icon: icon,
-      label: label,
-      onTap: () => setState(() => _filter = value),
-    );
-  }
-
+  // ────────── Record Row Builder ──────────
   Widget _buildRecordRow(MyData item) {
     return buildRecordRow(
       context,
@@ -226,15 +219,11 @@ class _RecordScreenState extends State<RecordScreen> {
           body: LayoutBuilder(
             builder: (context, constraints) {
               return Padding(
-                padding: EdgeInsets.fromLTRB(
-                  20.w,
-                  40.h,
-                  20.w,
-                  130.h,
-                ),
+                padding: EdgeInsets.fromLTRB(20.w, 40.h, 20.w, 130.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // ────────── Header ──────────
                     Row(
                       children: [
                         Icon(
@@ -243,6 +232,7 @@ class _RecordScreenState extends State<RecordScreen> {
                           color: theme.iconTheme.color,
                         ),
                         SizedBox(width: 16.w),
+
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -253,6 +243,7 @@ class _RecordScreenState extends State<RecordScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+
                             Text(
                               loc.transactionHistory,
                               style: textTheme.bodySmall?.copyWith(
@@ -266,41 +257,9 @@ class _RecordScreenState extends State<RecordScreen> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 16.h),
 
-                    Container(
-                      height: 50.h,
-                      width: double.infinity,
-                      margin: EdgeInsets.only(
-                        top: 18.h,
-                        bottom: 12.h,
-                      ),
-                      padding: EdgeInsets.all(2.r),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: theme.colorScheme.outline),
-                        borderRadius: BorderRadius.circular(50.r),
-                        color: theme.colorScheme.surface,
-                      ),
-                      child: Row(
-                        children: [
-                          _buildFilterTab(
-                            value: RecordFilter.all,
-                            icon: Icons.filter_list,
-                            label: loc.all,
-                          ),
-                          _buildFilterTab(
-                            value: RecordFilter.income,
-                            icon: Icons.trending_up,
-                            label: loc.income,
-                          ),
-                          _buildFilterTab(
-                            value: RecordFilter.expense,
-                            icon: Icons.trending_down,
-                            label: loc.expense,
-                          ),
-                        ],
-                      ),
-                    ),
-
+                    // ────────── Multi-select Mode ──────────
                     if (_isMultiSelectMode)
                       Container(
                         height: 48.h,
@@ -311,6 +270,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         ),
                         child: Row(
                           children: [
+                            // ────────── Selected Count ──────────
                             Text(
                               '${_selectedIds.length} ${loc.selected}',
                               style: textTheme.bodyMedium?.copyWith(
@@ -318,6 +278,8 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                             ),
                             const Spacer(),
+
+                            // ────────── Close Button ──────────
                             InkWell(
                               onTap: _clearSelection,
                               borderRadius: BorderRadius.circular(20.r),
@@ -331,6 +293,8 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                             ),
                             SizedBox(width: 8.w),
+
+                            // ────────── Delete Button ──────────
                             InkWell(
                               onTap: _deleteSelectedRecords,
                               borderRadius: BorderRadius.circular(20.r),
@@ -349,25 +313,29 @@ class _RecordScreenState extends State<RecordScreen> {
                     else
                       Row(
                         children: [
+                          // ────────── Search Bar ──────────
                           Expanded(
                             child: Container(
                               height: 48.h,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
                               decoration: BoxDecoration(
-                                border: Border.all(color: theme.colorScheme.outline),
+                                border: Border.all(
+                                  color: theme.colorScheme.outline,
+                                ),
                                 borderRadius: BorderRadius.circular(50.r),
                                 color: theme.colorScheme.surface,
                               ),
                               child: Row(
                                 children: [
+                                  // ────────── Search Icon ──────────
                                   Icon(
                                     Icons.search,
                                     size: 20.sp,
                                     color: theme.iconTheme.color,
                                   ),
                                   SizedBox(width: 8.w),
+
+                                  // ────────── Search Input ──────────
                                   Expanded(
                                     child: TextField(
                                       controller: _searchController,
@@ -376,11 +344,12 @@ class _RecordScreenState extends State<RecordScreen> {
                                       ),
                                       decoration: InputDecoration(
                                         hintText: loc.search,
-                                        hintStyle: textTheme.bodySmall?.copyWith(
-                                          color: theme.colorScheme.onSurface
-                                              .withValues(alpha: 0.5),
-                                          fontSize: 12.sp,
-                                        ),
+                                        hintStyle: textTheme.bodySmall
+                                            ?.copyWith(
+                                              color: theme.colorScheme.onSurface
+                                                  .withValues(alpha: 0.5),
+                                              fontSize: 12.sp,
+                                            ),
                                         border: InputBorder.none,
                                         isDense: true,
                                         contentPadding: EdgeInsets.zero,
@@ -388,6 +357,8 @@ class _RecordScreenState extends State<RecordScreen> {
                                       onChanged: (_) => setState(() {}),
                                     ),
                                   ),
+
+                                  // ────────── Clear Search Button ──────────
                                   if (_searchController.text.isNotEmpty)
                                     GestureDetector(
                                       onTap: () {
@@ -406,70 +377,10 @@ class _RecordScreenState extends State<RecordScreen> {
                             ),
                           ),
                           SizedBox(width: 12.w),
-                          Flexible(
-                            child: Container(
-                              height: 48.h,
-                              width: 150.w,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 14.w,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: _hasDateRange
-                                      ? theme.colorScheme.onSurface
-                                      : theme.colorScheme.outline,
-                                ),
-                                borderRadius: BorderRadius.circular(50.r),
-                                color: theme.colorScheme.surface,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: InkWell(
-                                      onTap: _selectDateRange,
-                                      borderRadius: BorderRadius.circular(50.r),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 12.h,
-                                        ),
-                                        child: Text(
-                                          _dateRangeLabel,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: textTheme.bodySmall?.copyWith(
-                                            color: _hasDateRange
-                                                ? theme.colorScheme.onSurface
-                                                : theme.colorScheme.onSurface
-                                                      .withValues(alpha: 0.5),
-                                            fontSize: 12.sp,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  InkWell(
-                                    onTap: _hasDateRange
-                                        ? _clearDateFilter
-                                        : _selectDateRange,
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    child: Icon(
-                                      _hasDateRange
-                                          ? Icons.close
-                                          : Icons.calendar_today,
-                                      size: 18.sp,
-                                      color: theme.colorScheme.onSurface
-                                          .withValues(alpha: 0.5),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                         ],
                       ),
 
+                    // ────────── Records List ──────────
                     Expanded(
                       child: Container(
                         width: double.infinity,
@@ -482,6 +393,7 @@ class _RecordScreenState extends State<RecordScreen> {
                         ),
                         child: Column(
                           children: [
+                            // ────────── Table Header ──────────
                             Row(
                               children: [
                                 Expanded(
@@ -495,6 +407,8 @@ class _RecordScreenState extends State<RecordScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
+
+                                // ────────── Position Column ──────────
                                 Expanded(
                                   flex: 1,
                                   child: Text(
@@ -506,6 +420,8 @@ class _RecordScreenState extends State<RecordScreen> {
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
+
+                                // ────────── Date Column ──────────
                                 Expanded(
                                   flex: 2,
                                   child: Text(
@@ -520,7 +436,13 @@ class _RecordScreenState extends State<RecordScreen> {
                               ],
                             ),
                             SizedBox(height: 8.h),
-                            Divider(color: theme.colorScheme.onSurfaceVariant, height: 1),
+
+                            Divider(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              height: 1,
+                            ),
+
+                            // ────────── Records List ──────────
                             Expanded(
                               child: _isLoading
                                   ? const Center(

@@ -306,7 +306,7 @@ If you have any questions about this privacy policy, please contact the develope
       // Record detail
       'money_list_label': 'ประเภทเงิน',
       'money_position_label': 'ตำแหน่งเงิน',
-      'group': 'กลุ่ม',
+      'group': 'หมวดหมู่',
       'date_label': 'วันที่',
 
       // Notebook
@@ -527,7 +527,7 @@ If you have any questions about this privacy policy, please contact the develope
       // Record detail
       'money_list_label': '资金类型',
       'money_position_label': '资金位置',
-      'group': '分组',
+      'group': '分类',
       'date_label': '日期',
 
       // Notebook

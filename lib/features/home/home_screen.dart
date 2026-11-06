@@ -16,6 +16,7 @@ import 'package:bookbank/features/home/widgets/group_card.dart';
 import 'package:bookbank/features/home/popup/transfer_popup.dart';
 import 'package:bookbank/utils/calculations.dart';
 import 'package:bookbank/features/home/widgets/menu_items.dart';
+import 'package:bookbank/features/menu/editGroup/editGroup_sgreen.dart';
 
 // ────────── Database ──────────
 import 'package:bookbank/data/database.dart';
@@ -462,12 +463,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 12.h),
 
-                    Text(
-                      loc.group,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: theme.colorScheme.outline,
-                      ),
+                    // ────────── Group Header ──────────
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          loc.group,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: theme.colorScheme.outline,
+                          ),
+                        ),
+
+                        // Edit Group Button
+                        FilledButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  Dialog(child: EditGroupSgreen()),
+                            );
+                          },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: theme.colorScheme.outline,
+                            padding: EdgeInsets.zero,
+                          ),
+                          label: Text(loc.editGroup),
+                          icon: Icon(LucideIcons.edit),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 8.h),
 
