@@ -213,7 +213,6 @@ class _UnallocatedSummaryState extends State<UnallocatedSummary>
           duration: const Duration(milliseconds: 200),
           width: double.infinity,
           height: 60.h,
-          margin: EdgeInsets.symmetric(vertical: 11.h),
           padding: EdgeInsets.all(12.r),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,

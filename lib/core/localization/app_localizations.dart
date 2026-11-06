@@ -85,7 +85,7 @@ class AppLocalizations {
       // Record detail
       'money_list_label': 'Money List',
       'money_position_label': 'Money Position',
-      'group': 'Group',
+      'group': 'Category',
       'date_label': 'Date',
 
       // Notebook
@@ -256,7 +256,7 @@ If you have any questions about this privacy policy, please contact the develope
       'currency_yuan': 'หยวนจีน (¥)',
 
       // Dashboard
-      'total_balance': 'ยอดรวมทั้งหมด',
+      'total_balance': 'ยอดที่ใช้ได้',
       'valid_today': 'ใช้ได้วันนี้',
       'bank': 'ธนาคาร',
       'cash': 'เงินสด',

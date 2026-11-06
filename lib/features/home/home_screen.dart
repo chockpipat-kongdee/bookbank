@@ -1,23 +1,28 @@
-import 'package:bookbank/Widgets/header/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
-// Local Imports
+// ────────── Theme & Localization ──────────
+import 'package:bookbank/core/localization/localization_provider.dart';
+import 'package:bookbank/core/theme/app_theme.dart';
+
+// ────────── Widgets ──────────
+import 'package:bookbank/Widgets/header/header.dart';
 import 'package:bookbank/features/home/widgets/dashboard_summary.dart';
 import 'package:bookbank/features/home/widgets/cash_box.dart';
 import 'package:bookbank/features/home/widgets/group_card.dart';
 import 'package:bookbank/features/home/popup/transfer_popup.dart';
 import 'package:bookbank/utils/calculations.dart';
-import 'package:bookbank/core/localization/localization_provider.dart';
-import 'package:bookbank/core/theme/app_theme.dart';
+import 'package:bookbank/features/home/widgets/menu_items.dart';
 
-// Database
+// ────────── Database ──────────
 import 'package:bookbank/data/database.dart';
 import 'package:bookbank/data/db_helper.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 
+// ────────── Group Data Model ──────────
 class GroupData {
   final String groupId;
   final String groupName;
@@ -55,33 +60,40 @@ class _HomeScreenState extends State<HomeScreen> {
   double _bankBalance = 0;
   double _cashBalance = 0;
 
+  // Group counts
   int _group1Count = 0;
   int _group2Count = 0;
   int _group3Count = 0;
   int _group4Count = 0;
 
+  // Group amounts
   double _group1Amount = 0;
   double _group2Amount = 0;
   double _group3Amount = 0;
   double _group4Amount = 0;
+
+  // Group incomes
   double _group1Income = 0;
   double _group2Income = 0;
   double _group3Income = 0;
   double _group4Income = 0;
   double _unallocatedAmount = 0;
 
+  // Totals
   double _incomeTotal = 0;
   double _expenseTotal = 0;
   double _monthlyIncome = 0;
   double _monthlyExpense = 0;
   List<FlSpot> _spots = [];
 
+  // Group percentages
   double _group1Percentage = 0;
   double _group2Percentage = 0;
   double _group3Percentage = 0;
   double _group4Percentage = 0;
   double _unallocatedPercentage = 0;
 
+  // Icons
   final List<IconData> _availableIcons = [
     Icons.shopping_cart_rounded,
     Icons.home_rounded,
@@ -105,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Icons.handyman_outlined,
   ];
 
+  // Helper methods
   IconData _getIconFromCodePoint(int codePoint) {
     return _availableIcons.firstWhere(
       (icon) => icon.codePoint == codePoint,
@@ -129,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
 
+    // Get amount based on group ID
     final amount = groupId == 'Group1'
         ? _group1Amount
         : groupId == 'Group2'
@@ -137,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ? _group3Amount
         : _group4Amount;
 
+    // Get count based on group ID
     final count = groupId == 'Group1'
         ? _group1Count
         : groupId == 'Group2'
@@ -145,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ? _group3Count
         : _group4Count;
 
+    // Get percentage based on group ID
     final percentage = groupId == 'Group1'
         ? _group1Percentage
         : groupId == 'Group2'
@@ -172,6 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadData();
   }
 
+  // Load data from database
   Future<void> _loadData() async {
     final data = await DatabaseHelper.instance.getAllData();
     if (!mounted) return;
@@ -181,9 +198,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // ────────── Calculate financial totals from transactions ──────────
   void _calculateTotals() {
     final calc = FinancialCalculations(_transactions);
 
+    // Calculate total balance
     _totalBalance = calc.sumAll().toDouble();
     _bankBalance = calc.sumBank().toDouble();
     _cashBalance = calc.sumCash().toDouble();
@@ -192,33 +211,39 @@ class _HomeScreenState extends State<HomeScreen> {
     _monthlyIncome = calc.monthlyIncome();
     _monthlyExpense = calc.monthlyExpense();
 
+    // Calculate group amounts
     _group1Amount = calc.sumGroup('Group1').toDouble();
     _group2Amount = calc.sumGroup('Group2').toDouble();
     _group3Amount = calc.sumGroup('Group3').toDouble();
     _group4Amount = calc.sumGroup('Group4').toDouble();
 
+    // Calculate group incomes
     _group1Income = calc.groupIncome('Group1').toDouble();
     _group2Income = calc.groupIncome('Group2').toDouble();
     _group3Income = calc.groupIncome('Group3').toDouble();
     _group4Income = calc.groupIncome('Group4').toDouble();
 
+    // Calculate group counts
     _group1Count = calc.groupCount('Group1');
     _group2Count = calc.groupCount('Group2');
     _group3Count = calc.groupCount('Group3');
     _group4Count = calc.groupCount('Group4');
 
+    // Calculate unallocated amount
     _unallocatedAmount = calc.unallocatedAmount();
 
+    // Calculate group percentages
     _group1Percentage = calc.calculateGroupPercentage('Group1');
     _group2Percentage = calc.calculateGroupPercentage('Group2');
     _group3Percentage = calc.calculateGroupPercentage('Group3');
     _group4Percentage = calc.calculateGroupPercentage('Group4');
     _unallocatedPercentage = calc.calculateUnallocatedPercentage();
 
+    // Generate monthly spots
     _spots = calc.generateMonthlySpots();
   }
 
-  /// เรียกเมื่อผู้ใช้ drop GroupCard/CashBox ลงบน GroupCard อื่น (หรือ CashBox)
+  /// ────────── Handle transfer drop ──────────
   Future<void> _onTransferDrop(GroupDragData source, GroupData target) async {
     if (!mounted) return;
 
@@ -242,8 +267,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final now = DateTime.now().toIso8601String().substring(0, 10);
 
-    // บันทึก 1 record ประเภท 'transfer' (ไม่นับเป็นรายรับ/รายจ่าย)
-    // moneyList = source groupId (ต้นทาง), moneyGroup = target groupId (ปลายทาง)
     await DatabaseHelper.instance.insertData(
       MyData(
         amount: result,
@@ -257,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await _loadData();
 
+    // ────────── Show success message ──────────
     if (mounted) {
       final loc = context.read<LocalizationProvider>().loc;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -286,6 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   size: 20.sp,
                 ),
                 SizedBox(width: 12.w),
+
                 Expanded(
                   child: Text(
                     loc.transferSuccess,
@@ -319,10 +344,13 @@ class _HomeScreenState extends State<HomeScreen> {
               return Padding(
                 padding: EdgeInsets.fromLTRB(24.w, 45.h, 24.w, 24.h),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // ────────── Header ──────────
                     Header(),
                     SizedBox(height: 16.h),
 
+                    // ────────── Dashboard Summary ──────────
                     DashboardSummary(
                       totalBalance: _totalBalance,
                       bankBalance: _bankBalance,
@@ -333,6 +361,48 @@ class _HomeScreenState extends State<HomeScreen> {
                       monthlyExpense: _monthlyExpense,
                       spots: _spots,
                     ),
+                    SizedBox(height: 12.h),
+
+                    // ────────── Menu Items ──────────
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MenuItems(
+                          late: 'Tang in',
+                          icon: LucideIcons.arrowDownToLine,
+                          onPressed: () {},
+                        ),
+
+                        MenuItems(
+                          late: 'Tang out',
+                          icon: LucideIcons.arrowUpFromLine,
+                          onPressed: () {},
+                        ),
+
+                        MenuItems(
+                          late: 'Transfer',
+                          icon: LucideIcons.repeat,
+                          onPressed: () {},
+                        ),
+
+                        MenuItems(
+                          late: 'Scan',
+                          icon: LucideIcons.scan,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 14.h),
+
+                    // ────────── Unallocated Summary ──────────
+                    Text(
+                      loc.cashBox,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
 
                     UnallocatedSummary(
                       incomeTotal: _incomeTotal,
@@ -376,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         groupSettings,
                       ).groupColor,
 
-                      // Callback: เมื่อ Group ถูก drop ลงบน CashBox
+                      // Callback when a group is dropped onto the cash box
                       onTransferDrop: (source) => _onTransferDrop(
                         source,
                         GroupData(
@@ -390,11 +460,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 12.h),
 
-                    // Groups Row1
+                    Text(
+                      loc.group,
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: theme.colorScheme.outline,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // ────────── Group1 ──────────
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(
@@ -458,6 +538,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(width: 12.w),
+
+                        // ────────── Group2 ──────────
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(
@@ -524,10 +606,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 12.h),
 
-                    // Groups Row2
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // ────────── Group3 ──────────
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(
@@ -592,6 +674,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(width: 12.w),
 
+                        // ────────── Group4 ──────────
                         Expanded(
                           child: GroupCard(
                             groupName: _getGroupData(
