@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildNavItem(0, LucideIcons.house, loc.home),
-                      _buildNavItem(1, LucideIcons.layoutList, loc.records),
+                      _buildNavItem(1, LucideIcons.layoutList, loc.record),
                       _buildNavItem(
                         3,
                         LucideIcons.chartNoAxesCombined,

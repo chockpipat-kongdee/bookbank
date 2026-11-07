@@ -1,17 +1,18 @@
+// ────────── Imports ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-// Theme / Database
+// ────────── Theme / Database ──────────
 import '../../../core/theme/app_theme.dart';
 import '../../../data/database.dart';
 import 'package:bookbank/core/localization/localization_provider.dart';
 
-// Functions
+// ────────── Functions ──────────
 import '../utils/record_utils.dart';
 import '../utils/record_filter.dart';
 
-/// Builds a detail row for the record details dialog.
+// ────────── Detail Row Widget ──────────
 Widget buildDetailRow(String label, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -33,7 +34,7 @@ Widget buildDetailRow(String label, String value) {
   );
 }
 
-/// Builds a filter tab widget for the record filter bar.
+// ────────── Filter Tab Widget ──────────
 Widget buildFilterTab({
   required BuildContext context,
   required RecordFilter value,
@@ -78,6 +79,7 @@ Widget buildFilterTab({
   );
 }
 
+// ────────── Record List View Widget ──────────
 Widget recondListView(IconData icon, String title, String data) {
   return Row(
     children: [
@@ -93,7 +95,7 @@ Widget recondListView(IconData icon, String title, String data) {
   );
 }
 
-/// Builds a single record row in the list.
+// ────────── Record Row Widget ──────────
 Widget buildRecordRow(
   BuildContext context,
   MyData item,
@@ -130,6 +132,7 @@ Widget buildRecordRow(
           ),
           child: Row(
             children: [
+              // ────────── Multi-select checkbox ──────────
               if (isMultiSelectMode) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -173,6 +176,8 @@ Widget buildRecordRow(
                 ),
                 const SizedBox(width: 10),
               ],
+
+              // ────────── Record details ──────────
               Expanded(
                 flex: 2,
                 child: Column(
@@ -202,6 +207,8 @@ Widget buildRecordRow(
                   ],
                 ),
               ),
+
+              // ────────── Transaction type ──────────
               Expanded(
                 flex: 2,
                 child: Text(
@@ -216,6 +223,8 @@ Widget buildRecordRow(
                   textAlign: TextAlign.center,
                 ),
               ),
+
+              // ────────── Date ──────────
               Expanded(
                 flex: 2,
                 child: Text(
@@ -227,6 +236,8 @@ Widget buildRecordRow(
                   textAlign: TextAlign.end,
                 ),
               ),
+              
+              // ────────── More options menu ──────────
               if (!isMultiSelectMode)
                 PopupMenuButton<String>(
                   padding: EdgeInsets.zero,
@@ -253,6 +264,7 @@ Widget buildRecordRow(
                         ],
                       ),
                     ),
+
                     if (!isTransfer) ...[
                       PopupMenuItem(
                         value: 'edit',
@@ -269,6 +281,7 @@ Widget buildRecordRow(
                         ),
                       ),
                     ],
+                  
                     PopupMenuItem(
                       value: 'delete',
                       child: Row(
@@ -301,7 +314,7 @@ Widget buildRecordRow(
   );
 }
 
-/// Menu item widgets for better organization.
+// ────────── Menu item widgets ──────────
 class ViewMenuItem extends StatelessWidget {
   const ViewMenuItem({super.key});
 

@@ -1,6 +1,8 @@
 // ────────── Packages ──────────
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
 // ────────── Theme & Localization ──────────
@@ -13,12 +15,12 @@ import 'package:bookbank/data/db_helper.dart';
 
 // ────────── Records Utils ──────────
 import 'package:bookbank/features/records/utils/record_actions.dart';
-import 'package:bookbank/features/records/utils/record_date_filter.dart';
 import 'package:bookbank/features/records/utils/record_filter.dart';
 import 'package:bookbank/features/records/utils/record_utils.dart';
 
 // ────────── Widgets ──────────
 import 'package:bookbank/features/records/widgets/record_widgets.dart';
+import 'package:bookbank/Widgets/select_date_time.dart';
 import 'package:bookbank/features/menu/editGroup/providers/group_settings_provider.dart';
 
 class RecordScreen extends StatefulWidget {
@@ -31,13 +33,12 @@ class RecordScreen extends StatefulWidget {
 class _RecordScreenState extends State<RecordScreen> {
   List<MyData> _allTransactions = [];
   RecordFilter _filter = RecordFilter.all;
-  DateTime? _startDate;
-  DateTime? _endDate;
   bool _isLoading = true;
 
   final TextEditingController _searchController = TextEditingController();
   final Set<int> _selectedIds = {};
   bool _isMultiSelectMode = false;
+  DateTime? _selectedDateTime;
 
   @override
   void initState() {
@@ -75,13 +76,16 @@ class _RecordScreenState extends State<RecordScreen> {
       return true;
     }).toList();
 
-    // Date Range Filter
-    filtered = filterByDateRange(
-      filtered,
-      _startDate,
-      _endDate,
-      (item) => item.date ?? '',
-    );
+    // Date Filter
+    if (_selectedDateTime != null) {
+      final selectedDateStr = DateFormat(
+        'yyyy-MM-dd',
+      ).format(_selectedDateTime!);
+      filtered = filtered.where((item) {
+        final date = item.date;
+        return date != null && date.startsWith(selectedDateStr);
+      }).toList();
+    }
 
     // Search Filter
     if (query.isNotEmpty) {
@@ -227,7 +231,7 @@ class _RecordScreenState extends State<RecordScreen> {
                     Row(
                       children: [
                         Icon(
-                          Icons.list_alt,
+                          LucideIcons.layoutList,
                           size: 24.sp,
                           color: theme.iconTheme.color,
                         ),
@@ -255,6 +259,53 @@ class _RecordScreenState extends State<RecordScreen> {
                             ),
                           ],
                         ),
+                        const Spacer(),
+
+                        // Filter button
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            LucideIcons.filter,
+                            size: 18.sp,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+
+                        // Date picker
+                        IconButton(
+                          onPressed: () => showSelectDateTime(
+                            context: context,
+                            initialDateTime: _selectedDateTime,
+                            onDateTimeSelected: (dateTime) {
+                              setState(() {
+                                _selectedDateTime = dateTime;
+                              });
+                            },
+                          ),
+                          icon: Icon(
+                            LucideIcons.calendar,
+                            size: 18.sp,
+                            color: _selectedDateTime != null
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.onSurface,
+                          ),
+                        ),
+
+                        // Clear date filter
+                        if (_selectedDateTime != null)
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedDateTime = null;
+                              });
+                            },
+                            icon: Icon(
+                              LucideIcons.x,
+                              size: 18.sp,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
                       ],
                     ),
                     SizedBox(height: 16.h),
@@ -376,95 +427,128 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 12.w),
                         ],
                       ),
+                    SizedBox(height: 18.h),
 
                     // ────────── Records List ──────────
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(top: 16.h),
-                        padding: EdgeInsets.all(16.r),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          border: Border.all(color: theme.colorScheme.outline),
-                          color: theme.colorScheme.surface,
-                        ),
-                        child: Column(
+                    Text((('00/00/0000'))),
+                    SizedBox(height: 8.h),
+
+                    Container(
+                      width: double.infinity,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14.r),
+                        color: theme.colorScheme.surface,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12.w),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // ────────── Table Header ──────────
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    loc.amount,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.sp,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-
-                                // ────────── Position Column ──────────
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    loc.position,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.sp,
-                                    ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-
-                                // ────────── Date Column ──────────
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    loc.date,
-                                    style: textTheme.bodySmall?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.sp,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
+                            // ────────── Icon ──────────
+                            Container(
+                              height: 35.h,
+                              width: 35.w,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.outline,
+                                borderRadius: BorderRadius.circular(50.r),
+                              ),
+                              child: Icon(
+                                LucideIcons.arrowUpFromLine,
+                                color: theme.colorScheme.onSurface,
+                                size: 20.sp,
+                              ),
                             ),
-                            SizedBox(height: 8.h),
+                            SizedBox(width: 12.w),
 
-                            Divider(
-                              color: theme.colorScheme.onSurfaceVariant,
-                              height: 1,
-                            ),
-
-                            // ────────── Records List ──────────
                             Expanded(
-                              child: _isLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : filtered.isEmpty
-                                  ? Center(
-                                      child: Text(
-                                        loc.noRecords,
-                                        style: textTheme.bodySmall?.copyWith(
-                                          color: theme.colorScheme.onSurface
-                                              .withValues(alpha: 0.5),
-                                          fontSize: 14.sp,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // ────────── Title ──────────
+                                      Text(
+                                        'Foot and Mouth Disease',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: theme.colorScheme.onSurface,
                                         ),
                                       ),
-                                    )
-                                  : ListView.builder(
-                                      itemCount: filtered.length,
-                                      itemBuilder: (context, index) {
-                                        return _buildRecordRow(filtered[index]);
-                                      },
-                                    ),
+
+                                      // ────────── Amount ──────────
+                                      Text(
+                                        '฿100.00',
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: theme.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.h),
+
+                                  Row(
+                                    children: [
+                                      // ────────── Money Position ──────────
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.outlineVariant,
+                                          border: Border.all(color: theme.colorScheme.onSurfaceVariant),
+                                          borderRadius: BorderRadius.circular(50.r),
+                                        ),
+                                        child: Text(
+                                          'Cash',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: theme.colorScheme.onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8.w),
+
+                                      // ────────── Category ──────────
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.outlineVariant,
+                                          border: Border.all(color: theme.colorScheme.onSurfaceVariant),
+                                          borderRadius: BorderRadius.circular(50.r),
+                                        ),
+                                        child: Text(
+                                          'Category1',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: theme.colorScheme.onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.h),
+
+                                  Divider(color: theme.colorScheme.outline),
+
+                                  // ────────── Date Time ──────────
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '15-11-2026 12:24',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: theme.colorScheme.outline,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

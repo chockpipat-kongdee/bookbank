@@ -59,7 +59,7 @@ class AppLocalizations {
       // Record screen
       'transaction_history': 'Transaction History',
       'all': 'All',
-      'search': 'Search',
+      'search': 'Search for program name...',
       'no_records': 'No records found',
       'selected': 'selected',
       'records': 'records',
@@ -93,7 +93,7 @@ class AppLocalizations {
       'notes_subtitle': 'Personal notes and reminders',
       'add': 'Add',
       'items': 'Items',
-      'notes': 'notes',
+      'notes': 'Notes',
       'recorded_on': 'Recorded on',
       'confirm_delete': 'Confirm Delete',
       'confirm_delete_note': 'Are you sure you want to delete the note',
@@ -280,7 +280,7 @@ If you have any questions about this privacy policy, please contact the develope
       // Record screen
       'transaction_history': 'ประวัติธุรกรรม',
       'all': 'ทั้งหมด',
-      'search': 'ค้นหา',
+      'search': 'ค้นหาชื่อรายการ...',
       'no_records': 'ไม่พบรายการ',
       'selected': 'รายการที่เลือก',
       'records': 'รายการ',
@@ -501,7 +501,7 @@ If you have any questions about this privacy policy, please contact the develope
       // Record screen
       'transaction_history': '交易历史',
       'all': '全部',
-      'search': '搜索',
+      'search': '搜索...',
       'no_records': '未找到记录',
       'selected': '已选择',
       'records': '条记录',
